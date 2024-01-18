@@ -1,0 +1,246 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "title": "The root schema",
+  "description": "The root schema comprises the entire JSON document.",
+  "default": {},
+  "required": [
+    "charts",
+    "datasets",
+    "files",
+    "filters",
+    "maps",
+    "meta",
+    "networks",
+    "notes",
+    "panes",
+    "slicers",
+    "styles",
+    "tables",
+    "timelines",
+    "trees",
+    "views",
+    "schema"
+  ],
+  "properties": {
+    "charts": {
+      "$id": "#/properties/charts",
+      "type": "object",
+      "title": "The charts schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": {},
+      "properties": {
+        "/": {}
+      },
+      "patternProperties": {
+        "^chart-[0-9]+$": {
+          "$id": "#/properties/charts/properties/chart-1",
+          "type": "object",
+          "title": "The chart-1 schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": {},
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "controls": {
+              "$id": "#/properties/charts/properties/chart-1/properties/controls",
+              "type": "boolean",
+              "title": "The controls schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": false
+            },
+            "interpolate": {
+              "$id": "#/properties/charts/properties/chart-1/properties/interpolate",
+              "type": "string",
+              "title": "The interpolate schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": "linear",
+              "enum": [
+                "linear",
+                "step",
+                "basis",
+                "cardinal",
+                "monotone"
+              ]
+            },
+            "seriesStacking": {
+              "$id": "#/properties/charts/properties/chart-1/properties/seriesStacking",
+              "type": "string",
+              "title": "The seriesStacking schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": "off",
+              "enum": [
+                "off",
+                "stacked",
+                "normalised",
+                "facet",
+                "overlapping"
+              ]
+            },
+            "seriesField": {
+              "$id": "#/properties/charts/properties/chart-1/properties/xAxisField",
+              "type": "string",
+              "title": "The xAxisField schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": ""
+            },
+            "seriesOrder": {
+              "$id": "#/properties/charts/properties/chart-1/properties/xAxisField",
+              "type": "string",
+              "title": "The xAxisField schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": "",
+              "enum": [
+                "ascending",
+                "descending"
+              ]
+            },
+            "seriesType": {
+              "$id": "#/properties/charts/properties/chart-1/properties/xAxisField",
+              "type": "string",
+              "title": "The xAxisField schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": "auto",
+              "enum": [
+                "auto",
+                "nominal",
+                "ordinal",
+                "quantitative",
+                "temporal"
+              ]
+            },
+            "showSelection": {
+              "$id": "#/properties/charts/properties/chart-1/properties/showSelection",
+              "type": "boolean",
+              "title": "The showSelection schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": false
+            },
+            "title": {
+              "$id": "#/properties/charts/properties/chart-1/properties/title",
+              "type": "string",
+              "title": "The title schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": ""
+            },
+            "type": {
+              "$id": "#/properties/charts/properties/chart-1/properties/type",
+              "type": "string",
+              "title": "The type schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": "",
+              "examples": [
+                "area",
+                "bar",
+                "circle",
+                "line",
+                "point",
+                "tick",
+                "custom"
+              ]
+            },
+            "xAxisField": {
+              "$id": "#/properties/charts/properties/chart-1/properties/xAxisField",
+              "type": "string",
+              "title": "The xAxisField schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": ""
+            },
+            "xAxisMode": {
+              "$id": "#/properties/charts/properties/chart-1/properties/xAxisField",
+              "type": "string",
+              "title": "The xAxisField schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": "",
+              "enum": [
+                "field",
+                "frequency",
+                "cumulative-frequency",
+                "sum-of",
+                "cumulative-sum-of",
+                "average-of"
+              ]
+            },
+            "xAxisOrder": {
+              "$id": "#/properties/charts/properties/chart-1/properties/xAxisField",
+              "type": "string",
+              "title": "The xAxisField schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": "",
+              "enum": [
+                "ascending",
+                "descending"
+              ]
+            },
+            "xAxisType": {
+              "$id": "#/properties/charts/properties/chart-1/properties/xAxisField",
+              "type": "string",
+              "title": "The xAxisField schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": "auto",
+              "enum": [
+                "auto",
+                "nominal",
+                "ordinal",
+                "quantitative",
+                "temporal"
+              ]
+            },
+            "yAxisField": {
+              "$id": "#/properties/charts/properties/chart-1/properties/xAxisField",
+              "type": "string",
+              "title": "The xAxisField schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": ""
+            },
+            "yAxisMode": {
+              "$id": "#/properties/charts/properties/chart-1/properties/xAxisField",
+              "type": "string",
+              "title": "The xAxisField schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": "",
+              "enum": [
+                "field",
+                "frequency",
+                "cumulative-frequency",
+                "sum-of",
+                "cumulative-sum-of",
+                "average-of"
+              ]
+            },
+            "yAxisOrder": {
+              "$id": "#/properties/charts/properties/chart-1/properties/xAxisField",
+              "type": "string",
+              "title": "The xAxisField schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": "",
+              "enum": [
+                "ascending",
+                "descending"
+              ]
+            },
+            "yAxisType": {
+              "$id": "#/properties/charts/properties/chart-1/properties/xAxisField",
+              "type": "string",
+              "title": "The xAxisField schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": "auto",
+              "enum": [
+                "auto",
+                "nominal",
+                "ordinal",
+                "quantitative",
+                "temporal"
+              ]
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": true
+}
