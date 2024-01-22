@@ -109,7 +109,7 @@ if __name__ == '__main__':
         metadata_values = list()
         for line in metadata_file:
             if header_line:
-                metadata_keys = metadata_file.readline().strip().split('\t')
+                metadata_keys = line.strip().split('\t')
                 print("Metadata columns:")
                 print(metadata_keys)
                 header_line = False
