@@ -1,7 +1,8 @@
 from json import dumps
 import requests
+import os
 
-from bio_api.microreact_integration import classes
+import classes
 
 def stringify(value_list):
     line = ";".join([str(value) for value in value_list])
@@ -78,7 +79,9 @@ def new_project(
     return rest_response
 
 
-# if __name__ == '__main__':
+if __name__ == '__main__':
+    MICROREACT_BASE_URL = os.environ["MICROREACT_BASE_URL"]
+    MICROREACT_ACCESS_TOKEN = os.environ["MICROREACT_ACCESS_TOKEN"]
 #     rest_response = new_project(
 #     project_name=project_name,
 #     initial_tree=tree.newick,
