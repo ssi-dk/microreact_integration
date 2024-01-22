@@ -3,6 +3,7 @@ import requests
 import os
 import argparse
 from datetime import datetime
+from pathlib import Path
 
 import classes
 
@@ -89,12 +90,20 @@ if __name__ == '__main__':
     print(f"OS username: {USERNAME}")
 
     parser = argparse.ArgumentParser()
+
+    parser.add_argument("tree", help="Path to a Newick file containing the initial tree")
+
     parser.add_argument(
         "--project_name",
         help="Project name (can be changed later in web interface)",
         default=USERNAME + '_' + str(datetime.now().isoformat(timespec='seconds'))
         )
     args = parser.parse_args()
+
+    tree_file = Path(args.tree)
+    with open(tree_file, 'r') as f:
+        newick = f.read()
+
 
     print(f"Name of created project will be {args.project_name}")
 
