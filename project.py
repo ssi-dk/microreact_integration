@@ -1,6 +1,8 @@
 from json import dumps
 import requests
 import os
+import argparse
+from datetime import datetime
 
 import classes
 
@@ -81,7 +83,21 @@ def request_new_project(
 
 if __name__ == '__main__':
     MICROREACT_BASE_URL = os.environ["MICROREACT_BASE_URL"]
+    print(f"Microreact base URL: {MICROREACT_BASE_URL}")
     MICROREACT_ACCESS_TOKEN = os.environ["MICROREACT_ACCESS_TOKEN"]
+    USERNAME = os.getlogin()
+    print(f"OS username: {USERNAME}")
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--project_name",
+        help="Project name (can be changed later in web interface)",
+        default=USERNAME + '_' + str(datetime.now().isoformat(timespec='seconds'))
+        )
+    args = parser.parse_args()
+
+    print(f"Name of created project will be {args.project_name}")
+
 #     rest_response = new_project(
 #     project_name=project_name,
 #     initial_tree=tree.newick,
