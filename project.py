@@ -90,9 +90,8 @@ if __name__ == '__main__':
     print(f"OS username: {USERNAME}")
 
     parser = argparse.ArgumentParser()
-
     parser.add_argument("tree", help="Path to a Newick file containing the initial tree")
-
+    parser.add_argument("metadata", help="Path to a metadata file")
     parser.add_argument(
         "--project_name",
         help="Project name (can be changed later in web interface)",
@@ -100,10 +99,10 @@ if __name__ == '__main__':
         )
     args = parser.parse_args()
 
-    tree_file = Path(args.tree)
-    with open(tree_file, 'r') as f:
+    with open(Path(args.tree), 'r') as f:
         newick = f.read()
-
+    with open(Path(args.metadata), 'r') as f:
+        metadata = f.read()
 
     print(f"Name of created project will be {args.project_name}")
 
