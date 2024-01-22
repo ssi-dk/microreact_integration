@@ -9,7 +9,7 @@ def stringify(value_list):
     return line + "\n"
 
 
-def build_basic_project(project_name: str, metadata_keys: list, metadata_values: list, tree: str):
+def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_values: list, tree: str):
     """
     Create a data structure that qualifies as a Microreact project and which can easily be used with the
     Microreact projects/create API endpoint to create an actual project.
@@ -54,7 +54,7 @@ def build_basic_project(project_name: str, metadata_keys: list, metadata_values:
 
     return project.to_dict()
 
-def new_project(
+def request_new_project(
     project_name: str,
     initial_tree: str,
     metadata_keys: list,
@@ -63,7 +63,7 @@ def new_project(
     mr_base_url: str,
     public: bool=False
 ):
-    project_as_dict = build_basic_project(project_name, metadata_keys, metadata_values, initial_tree)
+    project_as_dict = build_basic_project_dict(project_name, metadata_keys, metadata_values, initial_tree)
     json_data = dumps(project_as_dict)
     url = mr_base_url + '/api/projects/create/'
     if not public:
