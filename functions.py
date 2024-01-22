@@ -7,6 +7,12 @@ from pathlib import Path
 
 import classes
 
+MICROREACT_BASE_URL = os.environ["MICROREACT_BASE_URL"]
+print(f"Microreact base URL: {MICROREACT_BASE_URL}")
+MICROREACT_ACCESS_TOKEN = os.environ["MICROREACT_ACCESS_TOKEN"]
+USERNAME = os.getlogin()
+print(f"OS username: {USERNAME}")
+
 def stringify(value_list):
     line = ";".join([str(value) for value in value_list])
     return line + "\n"
@@ -85,11 +91,6 @@ def request_new_project(
 
 
 if __name__ == '__main__':
-    MICROREACT_BASE_URL = os.environ["MICROREACT_BASE_URL"]
-    print(f"Microreact base URL: {MICROREACT_BASE_URL}")
-    MICROREACT_ACCESS_TOKEN = os.environ["MICROREACT_ACCESS_TOKEN"]
-    USERNAME = os.getlogin()
-    print(f"OS username: {USERNAME}")
 
     parser = argparse.ArgumentParser()
     parser.add_argument("tree", help="Path to a Newick file containing the initial tree")
