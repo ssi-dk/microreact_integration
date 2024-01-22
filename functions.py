@@ -1,17 +1,11 @@
 from json import dumps
 import requests
-import os
 import argparse
 from datetime import datetime
 from pathlib import Path
 
 import classes
-
-MICROREACT_BASE_URL = os.environ["MICROREACT_BASE_URL"]
-print(f"Microreact base URL: {MICROREACT_BASE_URL}")
-MICROREACT_ACCESS_TOKEN = os.environ["MICROREACT_ACCESS_TOKEN"]
-USERNAME = os.getlogin()
-print(f"OS username: {USERNAME}")
+import env
 
 def stringify(value_list):
     line = ";".join([str(value) for value in value_list])
@@ -98,7 +92,7 @@ if __name__ == '__main__':
     parser.add_argument(
         "--project_name",
         help="Project name (can be changed later in web interface)",
-        default=USERNAME + '_' + str(datetime.now().isoformat(timespec='seconds'))
+        default=env.USERNAME + '_' + str(datetime.now().isoformat(timespec='seconds'))
         )
     args = parser.parse_args()
 
@@ -124,8 +118,8 @@ if __name__ == '__main__':
         initial_tree=newick,
         metadata_keys=metadata_keys,
         metadata_values=metadata_values,
-        mr_access_token=MICROREACT_ACCESS_TOKEN,
-        mr_base_url=MICROREACT_BASE_URL,
+        mr_access_token=env.MICROREACT_ACCESS_TOKEN,
+        mr_base_url=env.MICROREACT_BASE_URL,
         verify=False  # set to True in production
         )
     print("REST response:")
