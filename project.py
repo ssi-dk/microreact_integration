@@ -66,8 +66,8 @@ def request_new_project(
     mr_base_url: str,
     public: bool=False
 ):
-    project_as_dict = build_basic_project_dict(project_name, metadata_keys, metadata_values, initial_tree)
-    json_data = dumps(project_as_dict)
+    project_dict = build_basic_project_dict(project_name, metadata_keys, metadata_values, initial_tree)
+    json_data = dumps(project_dict)
     url = mr_base_url + '/api/projects/create/'
     if not public:
         url = url + '?access=private'
