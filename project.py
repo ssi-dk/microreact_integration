@@ -64,7 +64,8 @@ def request_new_project(
     metadata_values: list,
     mr_access_token: str,
     mr_base_url: str,
-    public: bool=False
+    public: bool=False,
+    verify: bool=True
 ):
     project_dict = build_basic_project_dict(project_name, metadata_keys, metadata_values, initial_tree)
     json_data = dumps(project_dict)
@@ -78,7 +79,7 @@ def request_new_project(
             'Access-Token': mr_access_token
             },
         data=json_data,
-        verify=False
+        verify=verify
     )
     return rest_response
 
@@ -123,7 +124,8 @@ if __name__ == '__main__':
         metadata_keys=metadata_keys,
         metadata_values=metadata_values,
         mr_access_token=MICROREACT_ACCESS_TOKEN,
-        mr_base_url=MICROREACT_BASE_URL
+        mr_base_url=MICROREACT_BASE_URL,
+        verify=False  # set to True in production
         )
     print("REST response:")
     print(rest_response)
