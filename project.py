@@ -116,16 +116,13 @@ if __name__ == '__main__':
 
     print(f"Name of created project will be {args.project_name}")
 
-#     rest_response = new_project(
-#     project_name=project_name,
-#     initial_tree=tree.newick,
-#     metadata_keys=metadata_keys,
-#     metadata_values=metadata_values,
-#     mr_access_token=settings.MICROREACT_ACCESS_TOKEN,  #TODO Access-Token must be per user
-#     mr_base_url=settings.MICROREACT_BASE_URL
-# )
-# print(rest_response)
-# if rest_response.status_code == 200:
-#     json_response = rest_response.json()
-#     dashboard.id = json_response['id']
-#     dashboard.url = json_response['url']
+    rest_response = request_new_project(
+        project_name=args.project_name,
+        initial_tree=newick,
+        metadata_keys=metadata_keys,
+        metadata_values=metadata_values,
+        mr_access_token=MICROREACT_ACCESS_TOKEN,
+        mr_base_url=MICROREACT_BASE_URL
+        )
+    print("REST response:")
+    print(rest_response)
