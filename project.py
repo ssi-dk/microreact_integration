@@ -78,6 +78,7 @@ def request_new_project(
             'Access-Token': mr_access_token
             },
         data=json_data,
+        verify=False
     )
     return rest_response
 
