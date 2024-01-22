@@ -102,7 +102,9 @@ if __name__ == '__main__':
     with open(Path(args.tree), 'r') as f:
         newick = f.read()
     with open(Path(args.metadata), 'r') as f:
-        metadata = f.read()
+        metadata_keys = f.readline().strip().split('\t')
+    print("Metadata columns:")
+    print(metadata_keys)
 
     print(f"Name of created project will be {args.project_name}")
 
