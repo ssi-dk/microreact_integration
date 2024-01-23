@@ -78,3 +78,20 @@ def new_project_fn(
         verify=verify
     )
     return rest_response
+
+def get_project_fn(
+    project_id: str,
+    mr_access_token: str,
+    mr_base_url: str,
+    verify: bool=True
+):
+    url = mr_base_url + '/api/projects/json?project=' + project_id
+    rest_response = requests.get(
+        url,
+        headers= {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Access-Token': mr_access_token
+            },
+        verify=verify
+    )
+    return rest_response
