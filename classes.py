@@ -9,6 +9,9 @@ current_dir = Path(__file__).parent
 with open(Path(current_dir, 'microreact_project_schema_v1.json'), 'r') as schema_file:
     MR_PROJECT_SCHEMA = loads(schema_file.read())
 
+def validate_json(json_dict:dict):
+    return validate(json_dict, MR_PROJECT_SCHEMA)
+
 @dataclass
 class Meta:
     name: str
@@ -186,7 +189,3 @@ class Project:
         
         validate(instance=output_dict, schema=MR_PROJECT_SCHEMA)
         return output_dict
-    
-    @classmethod
-    def from_dict(cls, json_dict:dict):
-        return cls(**json_dict)
