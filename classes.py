@@ -120,7 +120,7 @@ class Tree:
     file: File
     type: str = "rc"
     title: str = "Tree"
-    labelField: str = "key"
+    labelField: str = "ID"
     highlightedId: str = None
 
     def to_dict(self):
