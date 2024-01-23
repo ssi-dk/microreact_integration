@@ -32,8 +32,11 @@ print(current_trees)
 print()
 new_trees = dict()
 for id, tree_dict in current_trees.items():
-    print(f"id: {id}  tree_dict: {tree_dict}")
+    # print(f"id: {id}  tree_dict: {tree_dict}")
     new_trees[id] = Tree(**tree_dict).to_dict()
+
+print("New trees:")
+print(new_trees)
 
 # new_id = 'some_new_id'
 # new_tree = Tree(id=new_id, ...).to_dict()
