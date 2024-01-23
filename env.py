@@ -1,6 +1,5 @@
 import os
 
 MICROREACT_BASE_URL = os.environ["MICROREACT_BASE_URL"]
-print(f"Microreact base URL: {MICROREACT_BASE_URL}")
 MICROREACT_ACCESS_TOKEN = os.environ["MICROREACT_ACCESS_TOKEN"]
 USERNAME = os.getlogin()
