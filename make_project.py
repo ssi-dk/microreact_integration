@@ -13,6 +13,11 @@ parser.add_argument(
     help="Project name (can be changed later in web interface)",
     default=env.USERNAME + '_' + str(datetime.now().isoformat(timespec='seconds'))
     )
+parser.add_argument(
+    "--noverify",
+    help="Do not verify SSL certificate of Microreact host ",
+    action="store_true"
+    )
 args = parser.parse_args()
 
 with open(Path(args.tree), 'r') as tree_file:
@@ -39,7 +44,7 @@ rest_response = request_new_project(
     metadata_values=metadata_values,
     mr_access_token=env.MICROREACT_ACCESS_TOKEN,
     mr_base_url=env.MICROREACT_BASE_URL,
-    verify=False  # TODO: should be True in production
+    verify = not args.noverify
     )
 print(f"REST response: {str(rest_response)}")
 print(rest_response.json())
