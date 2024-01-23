@@ -1,11 +1,7 @@
 from json import dumps
 import requests
-import argparse
-from datetime import datetime
-from pathlib import Path
 
 import classes
-import env
 
 def stringify(value_list):
     line = ";".join([str(value) for value in value_list])
@@ -82,45 +78,3 @@ def request_new_project(
         verify=verify
     )
     return rest_response
-
-
-if __name__ == '__main__':
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("tree", help="Path to a Newick file containing the initial tree")
-    parser.add_argument("metadata", help="Path to a metadata file")
-    parser.add_argument(
-        "--project_name",
-        help="Project name (can be changed later in web interface)",
-        default=env.USERNAME + '_' + str(datetime.now().isoformat(timespec='seconds'))
-        )
-    args = parser.parse_args()
-
-    with open(Path(args.tree), 'r') as tree_file:
-        newick = tree_file.read()
-
-    with open(Path(args.metadata), 'r') as metadata_file:
-        header_line=True
-        metadata_values = list()
-        for line in metadata_file:
-            if header_line:
-                metadata_keys = line.strip().split('\t')
-                print("Metadata columns:")
-                print(metadata_keys)
-                header_line = False
-            else:
-                metadata_values.append(line.strip().split('\t'))
-
-    print(f"Name of created project will be {args.project_name}")
-
-    rest_response = request_new_project(
-        project_name=args.project_name,
-        initial_tree=newick,
-        metadata_keys=metadata_keys,
-        metadata_values=metadata_values,
-        mr_access_token=env.MICROREACT_ACCESS_TOKEN,
-        mr_base_url=env.MICROREACT_BASE_URL,
-        verify=False  # set to True in production
-        )
-    print("REST response:")
-    print(rest_response)
