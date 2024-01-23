@@ -189,4 +189,4 @@ class Project:
     
     @classmethod
     def from_dict(cls, json_dict:dict):
-        print(json_dict)
+        return cls(**json_dict)

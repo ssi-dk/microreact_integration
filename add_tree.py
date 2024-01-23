@@ -26,7 +26,10 @@ rest_response = get_project_json_fn(
     )
 
 json_dict = rest_response.json()
-project_dict = Project.from_dict(json_dict)
+json_dict.pop('_')  # TODO look into this again
+project= Project.from_dict(json_dict)
+print(type(project))
+print(project)
 
 # rest_response = add_tree_fn(
 #     project_id=args.project_id,
