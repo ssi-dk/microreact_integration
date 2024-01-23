@@ -3,7 +3,7 @@ from datetime import datetime
 from pathlib import Path
 
 import env
-from functions import request_new_project
+from functions import new_project_fn
 
 parser = argparse.ArgumentParser()
 parser.add_argument("tree", help="Path to a Newick file containing the initial tree")
@@ -37,7 +37,7 @@ with open(Path(args.metadata), 'r') as metadata_file:
 
 print(f"Name of created project will be {args.project_name}")
 
-rest_response = request_new_project(
+rest_response = new_project_fn(
     project_name=args.project_name,
     initial_tree=newick,
     metadata_keys=metadata_keys,

@@ -53,7 +53,7 @@ def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_va
 
     return project.to_dict()
 
-def request_new_project(
+def new_project_fn(
     project_name: str,
     initial_tree: str,
     metadata_keys: list,
