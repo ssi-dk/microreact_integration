@@ -79,7 +79,7 @@ def new_project_fn(
     )
     return rest_response
 
-def get_project_fn(
+def get_project_json_fn(
     project_id: str,
     mr_access_token: str,
     mr_base_url: str,
