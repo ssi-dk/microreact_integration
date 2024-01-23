@@ -186,3 +186,7 @@ class Project:
         
         validate(instance=output_dict, schema=MR_PROJECT_SCHEMA)
         return output_dict
+    
+    @classmethod
+    def from_dict(cls, json_dict:dict):
+        print(json_dict)
