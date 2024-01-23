@@ -7,7 +7,7 @@ from classes import Tree
 
 parser = argparse.ArgumentParser()
 parser.add_argument("project_id", help="The unique ID that defines the Microreact project")
-# parser.add_argument("newick_file", help="Path to a Newick file containing the tree to add")
+parser.add_argument("newick_file", help="Path to a Newick file containing the tree to add")
 parser.add_argument(
     "--noverify",
     help="Do not verify SSL certificate of Microreact host ",
@@ -15,8 +15,8 @@ parser.add_argument(
     )
 args = parser.parse_args()
 
-# with open(Path(args.tree), 'r') as tree_file:
-#     newick = tree_file.read()
+with open(Path(args.newick_file), 'r') as newick_file:
+     newick = newick_file.read()
 
 rest_response = get_project_json_fn(
     project_id=args.project_id,
@@ -30,18 +30,28 @@ current_trees = json_dict.pop('trees')
 print("Current trees:")
 print(current_trees)
 print()
+
 new_trees = dict()
 for id, tree_dict in current_trees.items():
     # print(f"id: {id}  tree_dict: {tree_dict}")
     new_trees[id] = Tree(**tree_dict).to_dict()
 
-print("New trees:")
+print("Trees after round-trip:")
 print(new_trees)
+print()
 
-# new_id = 'some_new_id'
-# new_tree = Tree(id=new_id, ...).to_dict()
-# new_trees[new_id] = new_tree
+new_id = 'some_new_id'  #TODO make an algorithm that can generate a reeasonable unique id
+assert new_id not in new_trees
+
+new_tree = Tree(id=new_id, file=newick).to_dict()
+new_trees[new_id] = new_tree
+print("Trees with new tree added:")
+print(new_trees)
+print()
+
 json_dict['trees'] = new_trees
+print("Project with new tree added:")
+print(json_dict)
 
 # rest_response = add_tree_fn(
 #     project_id=args.project_id,
