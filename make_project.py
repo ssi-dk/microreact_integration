@@ -41,5 +41,5 @@ rest_response = request_new_project(
     mr_base_url=env.MICROREACT_BASE_URL,
     verify=False  # TODO: should be True in production
     )
-print("REST response:")
-print(rest_response)
+print(f"REST response: {str(rest_response)}")
+print(rest_response.json())
