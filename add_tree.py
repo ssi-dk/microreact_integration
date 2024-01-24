@@ -25,8 +25,8 @@ rest_response = get_project_json_fn(
     verify = not args.noverify
     )
 
-json_dict = rest_response.json()
-current_trees = json_dict.pop('trees')
+project_dict = rest_response.json()
+current_trees = project_dict.pop('trees')
 print("Current trees:")
 print(current_trees)
 print()
@@ -49,13 +49,13 @@ print("Trees with new tree added:")
 print(new_trees)
 print()
 
-json_dict['trees'] = new_trees
+project_dict['trees'] = new_trees
 print("Project with new tree added:")
-print(json_dict)
+print(project_dict)
 
 rest_response = update_project_fn(
     project_id=args.project_id,
-    project_dict=json_dict,
+    project_dict=project_dict,
     mr_access_token=env.MICROREACT_ACCESS_TOKEN,
     mr_base_url=env.MICROREACT_BASE_URL,
     verify = not args.noverify
