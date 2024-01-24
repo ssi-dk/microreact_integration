@@ -2,7 +2,7 @@ import argparse
 from pathlib import Path
 
 import env
-from functions import get_project_json_fn
+from functions import get_project_json_fn, update_project_fn
 from classes import Tree
 
 parser = argparse.ArgumentParser()
@@ -52,6 +52,16 @@ print()
 json_dict['trees'] = new_trees
 print("Project with new tree added:")
 print(json_dict)
+
+rest_response = update_project_fn(
+    project_id=args.project_id,
+    project_dict=json_dict,
+    mr_access_token=env.MICROREACT_ACCESS_TOKEN,
+    mr_base_url=env.MICROREACT_BASE_URL,
+    verify = not args.noverify
+    )
+print(f"REST response: {str(rest_response)}")
+# print(rest_response.json())
 
 # rest_response = add_tree_fn(
 #     project_id=args.project_id,

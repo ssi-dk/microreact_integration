@@ -95,3 +95,24 @@ def get_project_json_fn(
         verify=verify
     )
     return rest_response
+
+def update_project_fn(
+    project_id: str,
+    project_dict: dict,
+    mr_access_token: str,
+    mr_base_url: str,
+    verify: bool=True
+):
+    json_data = dumps(project_dict)
+    url = mr_base_url + '/api/projects/update'
+    rest_response = requests.post(
+        url,
+        headers= {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Access-Token': mr_access_token,
+            'project': project_id
+            },
+        data=json_data,
+        verify=verify
+    )
+    return rest_response
