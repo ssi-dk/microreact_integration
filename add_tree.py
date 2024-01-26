@@ -41,9 +41,9 @@ for id, tree_dict in current_trees.items():
 # print()
 
 new_id = 'some_new_id'  #TODO make an algorithm that can generate a reeasonable unique id
-assert new_id not in new_trees
+# assert new_id not in new_trees
 
-new_tree = Tree(id=new_id, file=newick).to_dict()
+new_tree = Tree(id=new_id, file='some_file_id').to_dict()
 new_trees[new_id] = new_tree
 # print("Trees with new tree added:")
 # print(new_trees)
@@ -52,6 +52,9 @@ new_trees[new_id] = new_tree
 project_dict['trees'] = new_trees
 # print("Project with new tree added:")
 # print(project_dict)
+
+files = project_dict['files']
+files['some_file_id'] = {'blob': newick, 'format': "text/x-nh", 'name': "Another tree"}
 
 rest_response = update_project_fn(
     project_id=args.project_id,
