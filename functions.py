@@ -111,9 +111,9 @@ def update_project_fn(
         headers= {
             'Content-Type': 'application/json; charset=utf-8',
             'Access-Token': mr_access_token,
-            'project': project_id
             },
         data=json_data,
+        params={'project': project_id},
         verify=verify
     )
     return rest_response
