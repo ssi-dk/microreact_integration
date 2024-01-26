@@ -105,6 +105,7 @@ def update_project_fn(
 ):
     json_data = dumps(project_dict)
     url = mr_base_url + '/api/projects/update/'
+    print(project_id)
     rest_response = requests.post(
         url,
         headers= {

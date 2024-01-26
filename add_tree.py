@@ -27,31 +27,31 @@ rest_response = get_project_json_fn(
 
 project_dict = rest_response.json()
 current_trees = project_dict.pop('trees')
-print("Current trees:")
-print(current_trees)
-print()
+# print("Current trees:")
+# print(current_trees)
+# print()
 
 new_trees = dict()
 for id, tree_dict in current_trees.items():
     # print(f"id: {id}  tree_dict: {tree_dict}")
     new_trees[id] = Tree(**tree_dict).to_dict()
 
-print("Trees after round-trip:")
-print(new_trees)
-print()
+# print("Trees after round-trip:")
+# print(new_trees)
+# print()
 
 new_id = 'some_new_id'  #TODO make an algorithm that can generate a reeasonable unique id
 assert new_id not in new_trees
 
 new_tree = Tree(id=new_id, file=newick).to_dict()
 new_trees[new_id] = new_tree
-print("Trees with new tree added:")
-print(new_trees)
-print()
+# print("Trees with new tree added:")
+# print(new_trees)
+# print()
 
 project_dict['trees'] = new_trees
-print("Project with new tree added:")
-print(project_dict)
+# print("Project with new tree added:")
+# print(project_dict)
 
 rest_response = update_project_fn(
     project_id=args.project_id,
@@ -60,7 +60,7 @@ rest_response = update_project_fn(
     mr_base_url=env.MICROREACT_BASE_URL,
     verify = not args.noverify
     )
-print(f"REST response: {str(rest_response)}")
+# print(f"REST response: {str(rest_response)}")
 # print(rest_response.json())
 
 # rest_response = add_tree_fn(
