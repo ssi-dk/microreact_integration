@@ -3,6 +3,7 @@ from json import loads
 from pathlib import Path
 from dataclasses import dataclass, asdict, field
 from abc import ABC
+from typing import Optional
 from uuid import uuid4
 
 from jsonschema import validate
@@ -23,17 +24,15 @@ class Meta:
         return {'name': self.name}
 
 
-@dataclass
 class Element(ABC):
     """
-    An id string must be provided; however, if it's empty, a unique id will be created
+    Subclasses of this class are only used for creating NEW elements (not yet in Microreact).
+    So at every instantiation we create a new id.
     """
-
-    id:str
+    id: str
 
     def __post_init__(self):
-        if self.id == '':
-            self.id = str(uuid4())
+        self.id = str(uuid4())
 
 
 @dataclass
@@ -44,28 +43,32 @@ class Dataset(Element):
     def to_dict(self):
         return asdict(self)
 
+@dataclass
 class File(Element):
     type: str
-    name: str
-    format: str
-    mimetype: str
     body: str
+    name: Optional[str] = ''
+    format: Optional[str] = ''
+    mimetype: Optional[str] = ''
 
-    def __init__(self, project_name, type, body):
-        if type == 'data':
-            self.id = project_name + '_metadata'
-            self.name = project_name + '_metadata.csv'
-            self.format = 'text/csv'
-            self.mimetype = 'data:application/vnd.ms-excel;base64'
-        elif type == 'tree':
-            self.id = project_name + '_tree'
-            self.name = project_name + '_tree.nwk'
-            self.format = 'text/x-nh'
-            self.mimetype = 'data:application/octet-stream;base64'
+    def __post_init__(self):
+        super().__post_init__()
+        if self.type == 'data':
+            if self.name == '':
+                self.name = 'metadata.csv'
+            if self.format == '':
+                self.format = 'text/csv'
+            if self.mimetype == '':
+                self.mimetype = 'data:application/vnd.ms-excel;base64'
+        elif self.type == 'tree':
+            if self.name == '':
+                self.name = 'tree.nwk'
+            if self.format == '':
+                self.format = 'text/x-nh'
+            if self.mimetype == '':
+                self.mimetype = 'data:application/octet-stream;base64'
         else:
             raise ValueError("Invalid file type: " + type)
-        self.type = type
-        self.body = body
     
     def to_dict(self):
         blob = b64encode(self.body.encode('utf-8'))

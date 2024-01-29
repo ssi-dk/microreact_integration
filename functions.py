@@ -30,18 +30,17 @@ def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_va
     for record in metadata_values:
         metadata_body += stringify(record)
 
-    metadata_file = classes.File(project_name=project_name, type='data', body=metadata_body)
-    newick_file = classes.File(project_name=project_name, type='tree', body=tree)
-    dataset = classes.Dataset(id='', file=metadata_file.id, idFieldName=id_field_name)
+    metadata_file = classes.File(type='data', body=metadata_body)
+    newick_file = classes.File(type='tree', body=tree)
+    dataset = classes.Dataset(file=metadata_file.id, idFieldName=id_field_name)
     tree =  classes.Tree(
-            id='',
             type='rc',
             title='Tree',
             labelField=id_field_name,
             file=newick_file.id,
             highlightedId=None
         )
-    table = classes.Table(id='', title='Metadata', columns=metadata_keys, file=metadata_file.id)
+    table = classes.Table(title='Metadata', columns=metadata_keys, file=metadata_file.id)
 
     project = classes.Project(
         meta=project_meta,
