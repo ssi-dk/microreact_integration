@@ -38,7 +38,6 @@ files = project_dict['files']
 # print()
 
 new_file_instance = File(
-    project_name='wkvm',  # TODO project name is not unique and not suitable for ids
     type='tree',
     body=newick)
 new_file_dict = new_file_instance.to_dict()
@@ -49,32 +48,21 @@ files[new_file_instance.id] = new_file_dict
 
 ## TREES
 
-current_trees = project_dict.pop('trees')
+trees = project_dict.pop('trees')
 # print("Current trees:")
 # print(current_trees)
 # print()
 
-new_trees = dict()
-for id, tree_dict in current_trees.items():
-    # print(f"id: {id}  tree_dict: {tree_dict}")
-    new_trees[id] = Tree(**tree_dict).to_dict()  # Crossing the river to fetch water?
-
-# print("Trees after round-trip:")
-# print(new_trees)
-# print()
-
-new_tree_id = 'some_new_tree_id'  #TODO Tree instance should det its own id like the File instance
-# assert new_tree_id not in new_trees
-
 print("File ID:")
 print(new_file_dict['id'])
-new_tree = Tree(id=new_tree_id, file=new_file_instance.id).to_dict()
-new_trees[new_tree_id] = new_tree
+new_tree_dict = Tree(file=new_file_instance.id).to_dict()
+new_tree_id = new_tree_dict['id']
+trees[new_tree_id] = new_tree_dict
 # print("Trees with new tree added:")
 # print(new_trees)
 # print()
 
-project_dict['trees'] = new_trees
+project_dict['trees'] = trees  # Maybe this line is not necessary
 print("Project with new tree added:")
 print(project_dict)
 

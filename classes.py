@@ -27,12 +27,15 @@ class Meta:
 class Element(ABC):
     """
     Subclasses of this class are only used for creating NEW elements (not yet in Microreact).
-    So at every instantiation we create a new id.
+    Remember to to set_id after object initialization.
     """
-    id: str
+    id: str=''
 
-    def __post_init__(self):
-        self.id = str(uuid4())
+    def set_id(self):
+        if self.id == '':
+            print("Setting ID")
+            self.id = str(uuid4())
+            return self.id
 
 
 @dataclass
@@ -52,7 +55,7 @@ class File(Element):
     mimetype: Optional[str] = ''
 
     def __post_init__(self):
-        super().__post_init__()
+        super().set_id()
         if self.type == 'data':
             if self.name == '':
                 self.name = 'metadata.csv'
@@ -133,8 +136,18 @@ class Tree(Element):
     labelField: str = "ID"
     highlightedId: str = None
 
+    def __post_init__(self):
+        super().set_id()
+        print(f"Hello from Tree with id {self.id}")
+
     def to_dict(self):
-        return asdict(self)
+        return {
+            "id": self.id,
+            "type": self.type,
+            "title": self.title,
+            "labelField": self.labelField,
+            "highligthedId": self.highlightedId
+        }
 
 @dataclass
 class Project:
