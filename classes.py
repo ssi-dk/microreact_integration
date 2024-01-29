@@ -152,6 +152,7 @@ class Tree(Element):
     def to_dict(self):
         return {
             "id": self.id,
+            "file": self.file,
             "type": self.type,
             "title": self.title,
             "labelField": self.labelField,
