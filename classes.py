@@ -43,6 +43,9 @@ class Dataset(Element):
     file: str
     idFieldName: str
 
+    def __post_init__(self):
+        super().set_id()
+
     def to_dict(self):
         return asdict(self)
 
@@ -96,6 +99,9 @@ class Table(Element):
     columns: list
     file: str
 
+    def __post_init__(self):
+        super().set_id()
+
     def get_col_list(self):
         col_list = list()
         for column in self.columns:
@@ -127,6 +133,9 @@ class Timeline(Element):
     title: str = "Timeline"
     dataType: str = "year-month-day"
     yearField: str = "Year"
+
+    def __post_init__(self):
+        super().set_id()
 
 @dataclass
 class Tree(Element):
