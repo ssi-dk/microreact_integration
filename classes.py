@@ -2,6 +2,8 @@ from base64 import b64encode
 from json import loads
 from pathlib import Path
 from dataclasses import dataclass, asdict, field
+from abc import ABC
+from uuid import uuid4
 
 from jsonschema import validate
 
@@ -20,9 +22,14 @@ class Meta:
     def to_dict(self):
         return {'name': self.name}
 
+
 @dataclass
-class Dataset:
-    id: str
+class Element(ABC):
+    id:str
+
+
+@dataclass
+class Dataset(Element):
     file: str
     idFieldName: str
 
