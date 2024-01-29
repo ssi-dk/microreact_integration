@@ -147,7 +147,6 @@ class Tree(Element):
 
     def __post_init__(self):
         super().set_id()
-        print(f"Hello from Tree with id {self.id}")
 
     def to_dict(self):
         return {
