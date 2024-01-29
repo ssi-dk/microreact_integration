@@ -25,13 +25,15 @@ class Meta:
 
 @dataclass
 class Element(ABC):
+    """
+    An id string must be provided; however, if it's empty, a unique id will be created
+    """
+
     id:str
 
-    @classmethod
-    def from_scratch(cls, **kwargs):
-        instance =  cls(**kwargs)
-        instance.id = str(uuid4())
-        return instance
+    def __post_init__(self):
+        if self.id == '':
+            self.id = str(uuid4())
 
 
 @dataclass
