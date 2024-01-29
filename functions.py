@@ -41,7 +41,7 @@ def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_va
             file=newick_file.id,
             highlightedId=None
         )
-    table = classes.Table(paneId='table-1', title='Metadata', columns=metadata_keys, file=metadata_file.id)
+    table = classes.Table(id='table-1', title='Metadata', columns=metadata_keys, file=metadata_file.id)
 
     project = classes.Project(
         meta=project_meta,

@@ -72,14 +72,10 @@ class Column:
 
 @dataclass
 class Table:
-    paneId: str
+    id: str
     title: str
     columns: list
     file: str
-    
-    @property
-    def id(self):
-        return self.paneId
 
     def get_col_list(self):
         col_list = list()
@@ -93,7 +89,7 @@ class Table:
     def to_dict(self):
         return {
             'title': self.title,
-            'paneId': self.paneId,
+            'id': self.id,
             'columns': self.get_col_list(),
             'file': self.file
         }
