@@ -34,14 +34,14 @@ def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_va
     newick_file = classes.File(project_name=project_name, type='tree', body=tree)
     dataset = classes.Dataset(id='', file=metadata_file.id, idFieldName=id_field_name)
     tree =  classes.Tree(
-            id='tree-1',
+            id='',
             type='rc',
             title='Tree',
             labelField=id_field_name,
             file=newick_file.id,
             highlightedId=None
         )
-    table = classes.Table(id='table-1', title='Metadata', columns=metadata_keys, file=metadata_file.id)
+    table = classes.Table(id='', title='Metadata', columns=metadata_keys, file=metadata_file.id)
 
     project = classes.Project(
         meta=project_meta,
