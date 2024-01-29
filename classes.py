@@ -27,6 +27,12 @@ class Meta:
 class Element(ABC):
     id:str
 
+    @classmethod
+    def from_scratch(cls, **kwargs):
+        instance =  cls(**kwargs)
+        instance.id = str(uuid4())
+        return instance
+
 
 @dataclass
 class Dataset(Element):
