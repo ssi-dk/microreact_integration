@@ -36,8 +36,7 @@ class Dataset(Element):
     def to_dict(self):
         return asdict(self)
 
-class File:
-    id: str
+class File(Element):
     type: str
     name: str
     format: str
@@ -78,8 +77,7 @@ class Column:
     fixed: bool
 
 @dataclass
-class Table:
-    id: str
+class Table(Element):
     title: str
     columns: list
     file: str
@@ -102,8 +100,7 @@ class Table:
         }
 
 @dataclass
-class Timeline:
-    id: str
+class Timeline(Element):
     bounds: None
     controls: False
     nodeSize: 14
@@ -118,8 +115,7 @@ class Timeline:
     yearField: str = "Year"
 
 @dataclass
-class Tree:
-    id: str
+class Tree(Element):
     file: File
     type: str = "rc"
     title: str = "Tree"
