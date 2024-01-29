@@ -27,7 +27,7 @@ class Meta:
 class Element(ABC):
     """
     Subclasses of this class are only used for creating NEW elements (not yet in Microreact).
-    Remember to to set_id after object initialization.
+    Remember to run set_id() after object initialization.
     """
     id: str=''
 
