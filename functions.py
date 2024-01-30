@@ -2,6 +2,7 @@ from json import dumps
 import requests
 
 import classes
+from common import validate_json
 
 def stringify(value_list):
     line = ";".join([str(value) for value in value_list])
@@ -30,18 +31,17 @@ def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_va
     for record in metadata_values:
         metadata_body += stringify(record)
 
-    metadata_file = classes.File(project_name=project_name, type='data', body=metadata_body)
-    newick_file = classes.File(project_name=project_name, type='tree', body=tree)
-    dataset = classes.Dataset(id='dataset-1', file=metadata_file.id, idFieldName=id_field_name)
+    metadata_file = classes.File(type='data', body=metadata_body)
+    newick_file = classes.File(type='tree', body=tree)
+    dataset = classes.Dataset(file=metadata_file.id, idFieldName=id_field_name)
     tree =  classes.Tree(
-            id='tree-1',
             type='rc',
             title='Tree',
             labelField=id_field_name,
             file=newick_file.id,
             highlightedId=None
         )
-    table = classes.Table(paneId='table-1', title='Metadata', columns=metadata_keys, file=metadata_file.id)
+    table = classes.Table(title='Metadata', columns=metadata_keys, file=metadata_file.id)
 
     project = classes.Project(
         meta=project_meta,
@@ -116,4 +116,43 @@ def update_project_fn(
         params={'project': project_id},
         verify=verify
     )
+    return rest_response
+
+def add_element(project_dict:dict, section_name:str, new_element_dict:dict):
+    section_elements = project_dict.pop(section_name)
+    new_element_id = new_element_dict['id']
+    assert new_element_id not in section_elements
+    section_elements[new_element_id] = new_element_dict
+    project_dict[section_name] = section_elements
+    # validate_json(project_dict) Output from /api/projects/json does not currently validate
+    return project_dict, new_element_id
+
+def add_tree_fn(project_id, newick, mr_access_token, mr_base_url, verify):
+    rest_response = get_project_json_fn(
+        project_id=project_id,
+        mr_access_token=mr_access_token,
+        mr_base_url=mr_base_url,
+        verify=verify
+    )
+    project_dict = rest_response.json()
+
+    """We have to add something to both the files section and the trees section.
+    The newick data will go into the files section."""
+
+    # files section
+    new_file_dict = classes.File(type='tree', body=newick).to_dict()
+    project_dict, new_file_id = add_element(project_dict, 'files', new_file_dict)
+
+    # trees section
+    new_tree_dict = classes.Tree(file=new_file_id).to_dict()
+    project_dict, _new_tree_id = add_element(project_dict, 'trees', new_tree_dict)
+
+    rest_response = update_project_fn(
+        project_id=project_id,
+        project_dict=project_dict,
+        mr_access_token=mr_access_token,
+        mr_base_url=mr_base_url,
+        verify = verify
+        )
+
     return rest_response

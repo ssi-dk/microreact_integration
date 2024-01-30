@@ -1,16 +1,10 @@
 from base64 import b64encode
-from json import loads
-from pathlib import Path
 from dataclasses import dataclass, asdict, field
+from abc import ABC
+from typing import Optional
+from uuid import uuid4
 
-from jsonschema import validate
-
-current_dir = Path(__file__).parent
-with open(Path(current_dir, 'microreact_project_schema_v1.json'), 'r') as schema_file:
-    MR_PROJECT_SCHEMA = loads(schema_file.read())
-
-def validate_json(json_dict:dict):
-    return validate(json_dict, MR_PROJECT_SCHEMA)
+from common import validate_json
 
 @dataclass
 class Meta:
@@ -20,38 +14,58 @@ class Meta:
     def to_dict(self):
         return {'name': self.name}
 
+
+class Element(ABC):
+    """
+    Subclasses of this class are only used for creating NEW elements (not yet in Microreact).
+    Remember to run set_id() after object initialization.
+    """
+    id: str=''
+
+    def set_id(self):
+        if self.id == '':
+            print("Setting ID")
+            self.id = str(uuid4())
+            return self.id
+
+
 @dataclass
-class Dataset:
-    id: str
+class Dataset(Element):
     file: str
     idFieldName: str
+
+    def __post_init__(self):
+        super().set_id()
 
     def to_dict(self):
         return asdict(self)
 
-class File:
-    id: str
+@dataclass
+class File(Element):
     type: str
-    name: str
-    format: str
-    mimetype: str
     body: str
+    name: Optional[str] = ''
+    format: Optional[str] = ''
+    mimetype: Optional[str] = ''
 
-    def __init__(self, project_name, type, body):
-        if type == 'data':
-            self.id = project_name + '_metadata'
-            self.name = project_name + '_metadata.csv'
-            self.format = 'text/csv'
-            self.mimetype = 'data:application/vnd.ms-excel;base64'
-        elif type == 'tree':
-            self.id = project_name + '_tree'
-            self.name = project_name + '_tree.nwk'
-            self.format = 'text/x-nh'
-            self.mimetype = 'data:application/octet-stream;base64'
+    def __post_init__(self):
+        super().set_id()
+        if self.type == 'data':
+            if self.name == '':
+                self.name = 'metadata.csv'
+            if self.format == '':
+                self.format = 'text/csv'
+            if self.mimetype == '':
+                self.mimetype = 'data:application/vnd.ms-excel;base64'
+        elif self.type == 'tree':
+            if self.name == '':
+                self.name = 'tree.nwk'
+            if self.format == '':
+                self.format = 'text/x-nh'
+            if self.mimetype == '':
+                self.mimetype = 'data:application/octet-stream;base64'
         else:
             raise ValueError("Invalid file type: " + type)
-        self.type = type
-        self.body = body
     
     def to_dict(self):
         blob = b64encode(self.body.encode('utf-8'))
@@ -71,15 +85,13 @@ class Column:
     fixed: bool
 
 @dataclass
-class Table:
-    paneId: str
+class Table(Element):
     title: str
     columns: list
     file: str
-    
-    @property
-    def id(self):
-        return self.paneId
+
+    def __post_init__(self):
+        super().set_id()
 
     def get_col_list(self):
         col_list = list()
@@ -93,14 +105,13 @@ class Table:
     def to_dict(self):
         return {
             'title': self.title,
-            'paneId': self.paneId,
+            'id': self.id,
             'columns': self.get_col_list(),
             'file': self.file
         }
 
 @dataclass
-class Timeline:
-    id: str
+class Timeline(Element):
     bounds: None
     controls: False
     nodeSize: 14
@@ -114,17 +125,29 @@ class Timeline:
     dataType: str = "year-month-day"
     yearField: str = "Year"
 
+    def __post_init__(self):
+        super().set_id()
+
 @dataclass
-class Tree:
-    id: str
+class Tree(Element):
     file: File
     type: str = "rc"
     title: str = "Tree"
     labelField: str = "ID"
     highlightedId: str = None
 
+    def __post_init__(self):
+        super().set_id()
+
     def to_dict(self):
-        return asdict(self)
+        return {
+            "id": self.id,
+            "file": self.file,
+            "type": self.type,
+            "title": self.title,
+            "labelField": self.labelField,
+            "highligthedId": self.highlightedId
+        }
 
 @dataclass
 class Project:
@@ -187,5 +210,5 @@ class Project:
         for section in self.get_sections():
             output_dict[section] = self.dictify_section(section)
         
-        validate(instance=output_dict, schema=MR_PROJECT_SCHEMA)
+        validate_json(output_dict)
         return output_dict
