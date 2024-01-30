@@ -1,19 +1,10 @@
 from base64 import b64encode
-from json import loads
-from pathlib import Path
 from dataclasses import dataclass, asdict, field
 from abc import ABC
 from typing import Optional
 from uuid import uuid4
 
-from jsonschema import validate
-
-current_dir = Path(__file__).parent
-with open(Path(current_dir, 'microreact_project_schema_v1.json'), 'r') as schema_file:
-    MR_PROJECT_SCHEMA = loads(schema_file.read())
-
-def validate_json(json_dict:dict):
-    return validate(json_dict, MR_PROJECT_SCHEMA)
+from common import validate_json
 
 @dataclass
 class Meta:
@@ -219,5 +210,5 @@ class Project:
         for section in self.get_sections():
             output_dict[section] = self.dictify_section(section)
         
-        validate(instance=output_dict, schema=MR_PROJECT_SCHEMA)
+        validate_json(output_dict)
         return output_dict
