@@ -2,7 +2,7 @@ import argparse
 from datetime import datetime
 from pathlib import Path
 
-import env
+import common
 from functions import new_project_fn
 
 parser = argparse.ArgumentParser()
@@ -11,7 +11,7 @@ parser.add_argument("metadata", help="Path to a metadata file")
 parser.add_argument(
     "--project_name",
     help="Project name (can be changed later in web interface)",
-    default=env.USERNAME + '_' + str(datetime.now().isoformat(timespec='seconds'))
+    default=common.USERNAME + '_' + str(datetime.now().isoformat(timespec='seconds'))
     )
 parser.add_argument(
     "--noverify",
@@ -42,8 +42,8 @@ rest_response = new_project_fn(
     initial_tree=newick,
     metadata_keys=metadata_keys,
     metadata_values=metadata_values,
-    mr_access_token=env.MICROREACT_ACCESS_TOKEN,
-    mr_base_url=env.MICROREACT_BASE_URL,
+    mr_access_token=common.MICROREACT_ACCESS_TOKEN,
+    mr_base_url=common.MICROREACT_BASE_URL,
     verify = not args.noverify
     )
 print(f"REST response: {str(rest_response)}")

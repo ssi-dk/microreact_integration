@@ -1,7 +1,7 @@
 import argparse
 from pathlib import Path
 
-import env
+import common
 from functions import get_project_json_fn, update_project_fn
 from classes import File, Tree
 
@@ -20,8 +20,8 @@ with open(Path(args.newick_file), 'r') as newick_file:
 
 rest_response = get_project_json_fn(
     project_id=args.project_id,
-    mr_access_token=env.MICROREACT_ACCESS_TOKEN,
-    mr_base_url=env.MICROREACT_BASE_URL,
+    mr_access_token=common.MICROREACT_ACCESS_TOKEN,
+    mr_base_url=common.MICROREACT_BASE_URL,
     verify = not args.noverify
     )
 
@@ -48,8 +48,8 @@ project_dict['trees'] = trees
 rest_response = update_project_fn(
     project_id=args.project_id,
     project_dict=project_dict,
-    mr_access_token=env.MICROREACT_ACCESS_TOKEN,
-    mr_base_url=env.MICROREACT_BASE_URL,
+    mr_access_token=common.MICROREACT_ACCESS_TOKEN,
+    mr_base_url=common.MICROREACT_BASE_URL,
     verify = not args.noverify
     )
 
