@@ -116,3 +116,40 @@ def update_project_fn(
         verify=verify
     )
     return rest_response
+
+def add_tree_fn(project_id, newick, mr_access_token, mr_base_url, verify):
+    rest_response = get_project_json_fn(
+        project_id=project_id,
+        mr_access_token=mr_access_token,
+        mr_base_url=mr_base_url,
+        verify=verify
+    )
+    project_dict = rest_response.json()
+
+    """We have to add something to both the files section and the trees section.
+    The newick data will go into the files section."""
+
+    # files section
+    files = project_dict['files']
+    new_file_instance = classes.File(
+        type='tree',
+        body=newick)
+    new_file_dict = new_file_instance.to_dict()
+    files[new_file_instance.id] = new_file_dict
+
+    # trees section
+    trees = project_dict.pop('trees')
+    new_tree_dict = classes.Tree(file=new_file_instance.id).to_dict()
+    new_tree_id = new_tree_dict['id']
+    trees[new_tree_id] = new_tree_dict
+    project_dict['trees'] = trees
+
+    rest_response = update_project_fn(
+        project_id=project_id,
+        project_dict=project_dict,
+        mr_access_token=mr_access_token,
+        mr_base_url=mr_base_url,
+        verify = verify
+        )
+
+    return rest_response
