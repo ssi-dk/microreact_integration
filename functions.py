@@ -124,6 +124,7 @@ def add_element(project_dict:dict, section_name:str, new_element_dict:dict):
     assert new_element_id not in section_elements
     section_elements[new_element_id] = new_element_dict
     project_dict[section_name] = section_elements
+    # validate_json(project_dict) Output from /api/projects/json does not currently validate
     return project_dict, new_element_id
 
 def add_tree_fn(project_id, newick, mr_access_token, mr_base_url, verify):
