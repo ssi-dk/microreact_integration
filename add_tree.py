@@ -27,48 +27,23 @@ rest_response = get_project_json_fn(
 
 project_dict = rest_response.json()
 
-## We have to add something to both the files section and the trees section.
-## The newick data will go into the files section.
+"""We have to add something to both the files section and the trees section.
+The newick data will go into the files section."""
 
-## FILES
-
+# files section
 files = project_dict['files']
-# print("Current files:")
-# print(files)
-# print()
-
 new_file_instance = File(
     type='tree',
     body=newick)
 new_file_dict = new_file_instance.to_dict()
 files[new_file_instance.id] = new_file_dict
-# print("files with new file added:")
-# print(files)
-# print()
 
-## TREES
-
+# trees section
 trees = project_dict.pop('trees')
-# print("Current trees:")
-# print(current_trees)
-# print()
-
-print("File ID:")
-print(new_file_dict['id'])
 new_tree_dict = Tree(file=new_file_instance.id).to_dict()
 new_tree_id = new_tree_dict['id']
 trees[new_tree_id] = new_tree_dict
-# print("Trees with new tree added:")
-# print(new_trees)
-# print()
-
-project_dict['trees'] = trees  # Maybe this line is not necessary
-print("Project with new tree added:")
-print(project_dict)
-
-# These two lines were added with Khalil. They must be removed later.
-#files = project_dict['files']
-#files['some_file_id'] = {'blob': newick, 'format': "text/x-nh", 'name': "Another tree"}
+project_dict['trees'] = trees
 
 rest_response = update_project_fn(
     project_id=args.project_id,
@@ -78,12 +53,11 @@ rest_response = update_project_fn(
     verify = not args.noverify
     )
 
-# print(f"REST response: {str(rest_response)}")
-# print(rest_response.json())
+print(f"REST response: {str(rest_response)}")
+print(rest_response.json())
 
 # rest_response = add_tree_fn(
 #     project_id=args.project_id,
-#     initial_tree=newick,
 #     new_tree=args.tree,
 #     mr_access_token=env.MICROREACT_ACCESS_TOKEN,
 #     mr_base_url=env.MICROREACT_BASE_URL,
