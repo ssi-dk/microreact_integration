@@ -2,6 +2,7 @@ from json import dumps
 import requests
 
 import classes
+from common import validate_json
 
 def stringify(value_list):
     line = ";".join([str(value) for value in value_list])
@@ -130,17 +131,18 @@ def add_tree_fn(project_id, newick, mr_access_token, mr_base_url, verify):
     The newick data will go into the files section."""
 
     # files section
-    files = project_dict['files']
-    new_file_instance = classes.File(
-        type='tree',
-        body=newick)
-    new_file_dict = new_file_instance.to_dict()
-    files[new_file_instance.id] = new_file_dict
+    files = project_dict.pop('files')
+    new_file_dict = classes.File(type='tree', body=newick).to_dict()
+    new_file_id = new_file_dict['id']
+    assert new_file_id not in files
+    files[new_file_id] = new_file_dict
+    project_dict['files'] = files
 
     # trees section
     trees = project_dict.pop('trees')
-    new_tree_dict = classes.Tree(file=new_file_instance.id).to_dict()
+    new_tree_dict = classes.Tree(file=new_file_id).to_dict()
     new_tree_id = new_tree_dict['id']
+    assert new_tree_id not in trees
     trees[new_tree_id] = new_tree_dict
     project_dict['trees'] = trees
 
@@ -159,3 +161,4 @@ def add_tree_fn(project_id, newick, mr_access_token, mr_base_url, verify):
 #     new_element_id = new_element_dict['id']
 #     section_elements[new_element_id] = new_element_dict
 #     project_dict[section_name] = section_elements
+#     return new_element_id
