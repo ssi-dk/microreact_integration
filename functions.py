@@ -118,6 +118,14 @@ def update_project_fn(
     )
     return rest_response
 
+def add_element(project_dict:dict, section_name:str, new_element_dict:dict):
+    section_elements = project_dict.pop(section_name)
+    new_element_id = new_element_dict['id']
+    assert new_element_id not in section_elements
+    section_elements[new_element_id] = new_element_dict
+    project_dict[section_name] = section_elements
+    return project_dict, new_element_id
+
 def add_tree_fn(project_id, newick, mr_access_token, mr_base_url, verify):
     rest_response = get_project_json_fn(
         project_id=project_id,
@@ -131,20 +139,12 @@ def add_tree_fn(project_id, newick, mr_access_token, mr_base_url, verify):
     The newick data will go into the files section."""
 
     # files section
-    files = project_dict.pop('files')
     new_file_dict = classes.File(type='tree', body=newick).to_dict()
-    new_file_id = new_file_dict['id']
-    assert new_file_id not in files
-    files[new_file_id] = new_file_dict
-    project_dict['files'] = files
+    project_dict, new_file_id = add_element(project_dict, 'files', new_file_dict)
 
     # trees section
-    trees = project_dict.pop('trees')
     new_tree_dict = classes.Tree(file=new_file_id).to_dict()
-    new_tree_id = new_tree_dict['id']
-    assert new_tree_id not in trees
-    trees[new_tree_id] = new_tree_dict
-    project_dict['trees'] = trees
+    project_dict, _new_tree_id = add_element(project_dict, 'trees', new_tree_dict)
 
     rest_response = update_project_fn(
         project_id=project_id,
@@ -155,10 +155,3 @@ def add_tree_fn(project_id, newick, mr_access_token, mr_base_url, verify):
         )
 
     return rest_response
-
-# def add_element(project_dict:dict, section_name:str, new_element_dict:dict):
-#     section_elements = project_dict.pop(section_name)
-#     new_element_id = new_element_dict['id']
-#     section_elements[new_element_id] = new_element_dict
-#     project_dict[section_name] = section_elements
-#     return new_element_id
