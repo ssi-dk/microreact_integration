@@ -24,7 +24,6 @@ class Element(ABC):
 
     def set_id(self):
         if self.id == '':
-            print("Setting ID")
             self.id = str(uuid4())
             return self.id
 
