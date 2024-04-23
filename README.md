@@ -13,8 +13,8 @@ Although microreact_integration is primarily intended to use as a library for in
 
 ### get_project
 
-This script will get all information stored in MongoDB from an existing Microreact project. It will NOT return any actual data values from (like sequence ID's metadata content, etc.) since Microreact
-stores the actual data values on a filesystem that normally is unavailable fro users. The information that get_project will fetch is data about the project structure and layout.
+This script will print all information stored in MongoDB for an existing Microreact project. It will NOT fetch any actual data values (like sequence ID's, metadata content, etc.) since Microreact
+stores these on a filesystem that normally is unavailable for users. The information that get_project will fetch is data about the project structure and graphical layout.
 
 usage:
 
