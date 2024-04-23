@@ -5,7 +5,7 @@
 microreact_integration will need these environment variables to be set:
 
 - MICROREACT_BASE_URL: Base URL where Microreact is available
-- MICROREACT_ACCESS_TOKEN = Personal access token for a Microreact user
+- MICROREACT_ACCESS_TOKEN: Personal access token for a Microreact user
 
 ## Command-line scripts
 
