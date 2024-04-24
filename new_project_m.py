@@ -31,9 +31,11 @@ args = parser.parse_args()
 connection_string = getenv('BIO_API_MONGO_CONNECTION', 'mongodb://mongodb:27017/bio_api_test')
 connection:pymongo.MongoClient = pymongo.MongoClient()
 db = connection.get_database('bio_api_test')
-print(db.list_collection_names())
-# tree_calc = db['tree_calculations'].find_one()
-# print(tree_calc)
+if args.tree_calc is not None:
+    tree_calc = db['tree_calculations'].find_one({'_id': ObjectId(args.tree_calc)})
+else:
+    tree_calc = db['tree_calculations'].find_one()
+print(tree_calc)
 exit()
 
 with open(Path(args.tree), 'r') as tree_file:
