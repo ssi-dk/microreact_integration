@@ -1,17 +1,21 @@
 import argparse
 from datetime import datetime
 from pathlib import Path
+from os import getenv
+from sys import exit
 
 import pymongo
+from bson.objectid import ObjectId
 
 import common
 from functions import new_project_fn
 
-help_desc = ("Create a new minimal project in Microreact using a tree from local Microreact instance. "
+help_desc = ("Create a new minimal project in Microreact using a tree from MongoDB. "
+             "The script assumes a local MongoDB instance is running on default port and with no authentication requirements. "
+             "The MongoDB instance must contain a database named 'bio_api_test' containing a collection named 'tree_calculations.' "
              "A minimal metadata file will be generated automatically.")
 parser = argparse.ArgumentParser(description=help_desc)
-parser.add_argument("tree_calc", help="Mongo ID for a document in tree_calculations with the tree to send to Microreact")
-parser.add_argument("metadata", help="Path to a metadata file")
+parser.add_argument("--tree_calc", help="Mongo ID for a document in tree_calculations with the tree to send to Microreact")
 parser.add_argument(
     "--project_name",
     help="Project name (can be changed later in web interface)",
@@ -23,6 +27,14 @@ parser.add_argument(
     action="store_true"
     )
 args = parser.parse_args()
+
+connection_string = getenv('BIO_API_MONGO_CONNECTION', 'mongodb://mongodb:27017/bio_api_test')
+connection:pymongo.MongoClient = pymongo.MongoClient()
+db = connection.get_database('bio_api_test')
+print(db.list_collection_names())
+# tree_calc = db['tree_calculations'].find_one()
+# print(tree_calc)
+exit()
 
 with open(Path(args.tree), 'r') as tree_file:
     newick = tree_file.read()
