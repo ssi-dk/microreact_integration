@@ -2,11 +2,15 @@ import argparse
 from datetime import datetime
 from pathlib import Path
 
+import pymongo
+
 import common
 from functions import new_project_fn
 
-parser = argparse.ArgumentParser(description="Create a new minimal project in Microreact using a tree and a metadata table from local Microreact.")
-parser.add_argument("tree", help="Path to a Newick file containing the initial tree")
+help_desc = ("Create a new minimal project in Microreact using a tree from local Microreact instance. "
+             "A minimal metadata file will be generated automatically.")
+parser = argparse.ArgumentParser(description=help_desc)
+parser.add_argument("tree_calc", help="Mongo ID for a document in tree_calculations with the tree to send to Microreact")
 parser.add_argument("metadata", help="Path to a metadata file")
 parser.add_argument(
     "--project_name",
