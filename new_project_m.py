@@ -35,26 +35,24 @@ if args.tree_calc is not None:
     tree_calc = db['tree_calculations'].find_one({'_id': ObjectId(args.tree_calc)})
 else:
     tree_calc = db['tree_calculations'].find_one()
-print(tree_calc)
-exit()
+newick = tree_calc['result']
+print(newick)
+# exit()
 
-with open(Path(args.tree), 'r') as tree_file:
-    newick = tree_file.read()
-
-with open(Path(args.metadata), 'r') as metadata_file:
-    header_line=True
-    metadata_values = list()
-    for line in metadata_file:
-        if header_line:
-            metadata_keys = line.strip().split('\t')
-            print("Metadata columns:")
-            print(metadata_keys)
-            header_line = False
-        else:
-            metadata_values.append(line.strip().split('\t'))
+# with open(Path(args.metadata), 'r') as metadata_file:
+#     header_line=True
+#     metadata_values = list()
+#     for line in metadata_file:
+#         if header_line:
+#             metadata_keys = line.strip().split('\t')
+#             print("Metadata columns:")
+#             print(metadata_keys)
+#             header_line = False
+#         else:
+#             metadata_values.append(line.strip().split('\t'))
 
 print(f"Name of created project will be {args.project_name}")
-
+exit()
 rest_response = new_project_fn(
     project_name=args.project_name,
     initial_tree=newick,
