@@ -5,7 +5,7 @@ from pathlib import Path
 import common
 from functions import new_project_fn
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description="Create a new minimal project in Microreact using a tree and a metadata table from files.")
 parser.add_argument("tree", help="Path to a Newick file containing the initial tree")
 parser.add_argument("metadata", help="Path to a metadata file")
 parser.add_argument(
