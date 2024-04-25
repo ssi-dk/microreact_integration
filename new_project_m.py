@@ -40,10 +40,13 @@ print(tree_calc)
 dmx_job = db['dist_calculations'].find_one({'_id': ObjectId(tree_calc['dmx_job'])})
 print("DMX job document:")
 print(dmx_job)
-seq_to_mongo = dmx_job['result']['seq_to_mongo']
+seq_to_mongo:dict = dmx_job['result']['seq_to_mongo']
 print("Seq to mongo:")
 print(seq_to_mongo)
-exit()
+metadata_keys = ['seq_id', 'db_id']
+metadata_values = list()
+for k, v in seq_to_mongo.items():
+    metadata_values.append([k, v])
 
 # with open(Path(args.metadata), 'r') as metadata_file:
 #     header_line=True
@@ -61,7 +64,7 @@ exit()
 
 rest_response = new_project_fn(
     project_name=args.project_name,
-    initial_tree=newick,
+    initial_tree=tree_calc['result'],
     metadata_keys=metadata_keys,
     metadata_values=metadata_values,
     mr_access_token=common.MICROREACT_ACCESS_TOKEN,
