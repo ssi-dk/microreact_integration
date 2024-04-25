@@ -10,12 +10,18 @@ from bson.objectid import ObjectId
 import common
 from functions import new_project_fn
 
-help_desc = ("Create a new minimal project in Microreact using a tree from MongoDB. "
+help_desc = ("Create a new project in Microreact using one or more trees defined in MongoDB. "
              "The script assumes a local MongoDB instance is running on default port and with no authentication requirements. "
              "The MongoDB instance must contain a database named 'bio_api_test' containing a collection named 'tree_calculations.' "
-             "A minimal metadata file will be generated automatically.")
+             "A minimal data table will be generated automatically.")
 parser = argparse.ArgumentParser(description=help_desc)
-parser.add_argument("--tree_calc", help="Mongo ID for a document in tree_calculations with the tree to send to Microreact")
+parser.add_argument("--trees",
+                    help=(
+                        "Mongo ID(s) for document(s) in tree_calculations collection. "
+                        "If more than one ID, separate with commas without spaces. "
+                        "If argument is omitted, a random tree tree_calculations collection will be chosen."
+                        )
+                    )
 parser.add_argument(
     "--project_name",
     help="Project name (can be changed later in web interface)",
@@ -31,15 +37,35 @@ args = parser.parse_args()
 connection_string = getenv('BIO_API_MONGO_CONNECTION', 'mongodb://mongodb:27017/bio_api_test')
 connection:pymongo.MongoClient = pymongo.MongoClient()
 db = connection.get_database('bio_api_test')
-if args.tree_calc is not None:
-    tree_calc = db['tree_calculations'].find_one({'_id': ObjectId(args.tree_calc)})
+trees_str: str = args.trees
+newicks = list()
+if trees_str is None:
+    tc = db['tree_calculations'].find_one()
+    dmx_job_id = tc['dmx_job']
+    dmx_job = db['dist_calculations'].find_one({'_id': ObjectId(dmx_job_id)})
+    assert 'result' in dmx_job
+    assert type(dmx_job['result']) is dict
+    assert['seq_to_mongo'] in dmx_job['result']
+    print(dmx_job)
+    newicks.append(tc['result'])
 else:
-    tree_calc = db['tree_calculations'].find_one()
-print("Full tree calc document:")
-print(tree_calc)
-dmx_job = db['dist_calculations'].find_one({'_id': ObjectId(tree_calc['dmx_job'])})
-print("DMX job document:")
-print(dmx_job)
+    tree_ids = [ ObjectId(id) for id in trees_str.split(',') ]
+    print("Tree ids:")
+    print(tree_ids)
+    tree_calcs = db['tree_calculations'].find({'_id': {'$in': tree_ids}})
+    tc = next(tree_calcs)
+    newicks.append(tc['result'])
+    dmx_job_id = tc['dmx_job']
+    dmx_job = db['dist_calculations'].find_one({'_id': ObjectId(dmx_job_id)})
+    while True:
+        try:
+            tc = next(tree_calcs)
+            # Make sure that all trees are calculated from the same dmx job
+            assert tc['dmx_job'] == dmx_job_id
+            newicks.append(tc['result'])
+        except StopIteration:
+            break
+
 seq_to_mongo:dict = dmx_job['result']['seq_to_mongo']
 print("Seq to mongo:")
 print(seq_to_mongo)
@@ -50,7 +76,7 @@ for k, v in seq_to_mongo.items():
 
 rest_response = new_project_fn(
     project_name=args.project_name,
-    newicks=[tree_calc['result']],
+    newicks=newicks,
     metadata_keys=metadata_keys,
     metadata_values=metadata_values,
     mr_access_token=common.MICROREACT_ACCESS_TOKEN,
