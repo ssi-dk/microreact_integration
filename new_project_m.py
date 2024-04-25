@@ -37,6 +37,12 @@ else:
     tree_calc = db['tree_calculations'].find_one()
 print("Full tree calc document:")
 print(tree_calc)
+dmx_job = db['dist_calculations'].find_one({'_id': ObjectId(tree_calc['dmx_job'])})
+print("DMX job document:")
+print(dmx_job)
+seq_to_mongo = dmx_job['result']['seq_to_mongo']
+print("Seq to mongo:")
+print(seq_to_mongo)
 exit()
 
 # with open(Path(args.metadata), 'r') as metadata_file:
