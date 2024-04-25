@@ -11,15 +11,15 @@ def stringify(value_list):
 
 def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_values: list, tree: str):
     """
-    Create a data structure that qualifies as a Microreact project and which can easily be used with the
+    Create a data structure that defines a Microreact project and which can easily be used with the
     Microreact projects/create API endpoint to create an actual project.
 
-    The project will contain a single tree and a data table, and will have no other elements.
+    The project will contain one or more trees and a data table, and will have no other elements.
 
     project_name: the name that will be shown for the project
     metadata_keys: keys of the metadata fields as a list. The first one will become the id field
     metadata_values: metadata values as a list of lists
-    tree: tree in Newick format
+    trees: list with trees in Newick format (as strings)
 
     Returns: a dict structure that is validated with MR's JSON schema and can be converted to JSON with json.dumps().
     """
@@ -32,8 +32,9 @@ def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_va
         metadata_body += stringify(record)
 
     metadata_file = classes.File(type='data', body=metadata_body)
-    newick_file = classes.File(type='tree', body=tree)
     dataset = classes.Dataset(file=metadata_file.id, idFieldName=id_field_name)
+
+    newick_file = classes.File(type='tree', body=tree)
     tree =  classes.Tree(
             type='rc',
             title='Tree',
@@ -41,6 +42,7 @@ def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_va
             file=newick_file.id,
             highlightedId=None
         )
+
     table = classes.Table(title='Metadata', columns=metadata_keys, file=metadata_file.id)
 
     project = classes.Project(
