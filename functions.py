@@ -9,7 +9,7 @@ def stringify(value_list):
     return line + "\n"
 
 
-def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_values: list, newick: str):
+def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_values: list, newicks: list[str]):
     """
     Create a data structure that defines a Microreact project and which can easily be used with the
     Microreact projects/create API endpoint to create an actual project.
@@ -34,23 +34,30 @@ def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_va
     metadata_file = classes.File(type='data', body=metadata_body)
     dataset = classes.Dataset(file=metadata_file.id, idFieldName=id_field_name)
 
-    newick_file = classes.File(type='tree', body=newick)
-    tree =  classes.Tree(
-            type='rc',
-            title='Tree',
-            labelField=id_field_name,
-            file=newick_file.id,
-            highlightedId=None
-        )
+    files = [metadata_file]
+    trees = list()
+    tree_number = 1
+    for newick in newicks:
+        newick_file = classes.File(type='tree', body=newick)
+        files.append(newick_file)
+        tree =  classes.Tree(
+                type='rc',
+                title='Tree ' + str(tree_number),
+                labelField=id_field_name,
+                file=newick_file.id,
+                highlightedId=None
+            )
+        trees.append(tree)
+        tree_number += 1
 
     table = classes.Table(title='Metadata', columns=metadata_keys, file=metadata_file.id)
 
     project = classes.Project(
         meta=project_meta,
         datasets=[dataset],
-        files=[metadata_file, newick_file],
+        files=files,
         tables=[table],
-        trees = [tree]
+        trees=trees
     )
 
     return project.to_dict()
@@ -65,7 +72,7 @@ def new_project_fn(
     public: bool=False,
     verify: bool=True
 ):
-    project_dict = build_basic_project_dict(project_name, metadata_keys, metadata_values, initial_tree)
+    project_dict = build_basic_project_dict(project_name, metadata_keys, metadata_values, [initial_tree])
     json_data = dumps(project_dict)
     url = mr_base_url + '/api/projects/create/'
     if not public:
