@@ -48,20 +48,6 @@ metadata_values = list()
 for k, v in seq_to_mongo.items():
     metadata_values.append([k, v])
 
-# with open(Path(args.metadata), 'r') as metadata_file:
-#     header_line=True
-#     metadata_values = list()
-#     for line in metadata_file:
-#         if header_line:
-#             metadata_keys = line.strip().split('\t')
-#             print("Metadata columns:")
-#             print(metadata_keys)
-#             header_line = False
-#         else:
-#             metadata_values.append(line.strip().split('\t'))
-
-# print(f"Name of created project will be {args.project_name}")
-
 rest_response = new_project_fn(
     project_name=args.project_name,
     initial_tree=tree_calc['result'],
