@@ -39,7 +39,7 @@ print(f"Name of created project will be {args.project_name}")
 
 rest_response = new_project_fn(
     project_name=args.project_name,
-    initial_tree=newick,
+    newick=newick,
     metadata_keys=metadata_keys,
     metadata_values=metadata_values,
     mr_access_token=common.MICROREACT_ACCESS_TOKEN,

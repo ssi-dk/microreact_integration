@@ -50,7 +50,7 @@ for k, v in seq_to_mongo.items():
 
 rest_response = new_project_fn(
     project_name=args.project_name,
-    initial_tree=tree_calc['result'],
+    newick=tree_calc['result'],
     metadata_keys=metadata_keys,
     metadata_values=metadata_values,
     mr_access_token=common.MICROREACT_ACCESS_TOKEN,

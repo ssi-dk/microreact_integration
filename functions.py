@@ -64,7 +64,7 @@ def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_va
 
 def new_project_fn(
     project_name: str,
-    initial_tree: str,
+    newick: str,
     metadata_keys: list,
     metadata_values: list,
     mr_access_token: str,
@@ -72,7 +72,7 @@ def new_project_fn(
     public: bool=False,
     verify: bool=True
 ):
-    project_dict = build_basic_project_dict(project_name, metadata_keys, metadata_values, [initial_tree])
+    project_dict = build_basic_project_dict(project_name, metadata_keys, metadata_values, [newick])
     json_data = dumps(project_dict)
     url = mr_base_url + '/api/projects/create/'
     if not public:
