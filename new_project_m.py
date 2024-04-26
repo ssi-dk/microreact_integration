@@ -52,14 +52,14 @@ else:
     tree_ids = [ ObjectId(id) for id in trees_str.split(',') ]
     print("Tree ids:")
     print(tree_ids)
-    tree_calcs = db['tree_calculations'].find({'_id': {'$in': tree_ids}})
-    tc = next(tree_calcs)
+    tree_cursor = db['tree_calculations'].find({'_id': {'$in': tree_ids}})
+    tc = next(tree_cursor)
     newicks.append(tc['result'])
     dmx_job_id = tc['dmx_job']
     dmx_job = db['dist_calculations'].find_one({'_id': ObjectId(dmx_job_id)})
     while True:
         try:
-            tc = next(tree_calcs)
+            tc = next(tree_cursor)
             # Make sure that all trees are calculated from the same dmx job
             assert tc['dmx_job'] == dmx_job_id
             newicks.append(tc['result'])
