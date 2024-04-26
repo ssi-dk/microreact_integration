@@ -9,7 +9,7 @@ def stringify(value_list):
     return line + "\n"
 
 
-def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_values: list, newicks: list[str]):
+def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_values: list, tree_calcs: list):
     """
     Create a data structure that defines a Microreact project and which can easily be used with the
     Microreact projects/create API endpoint to create an actual project.
@@ -37,12 +37,12 @@ def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_va
     files = [metadata_file]
     trees = list()
     tree_number = 1
-    for newick in newicks:
-        newick_file = classes.File(type='tree', body=newick)
+    for tree_calc in tree_calcs:
+        newick_file = classes.File(type='tree', body=tree_calc['result'])
         files.append(newick_file)
         tree =  classes.Tree(
                 type='rc',
-                title='Tree ' + str(tree_number),
+                title=tree_calc['method'],
                 labelField=id_field_name,
                 file=newick_file.id,
                 highlightedId=None
@@ -64,7 +64,7 @@ def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_va
 
 def new_project_fn(
     project_name: str,
-    newicks: list[str],
+    tree_calcs: list,
     metadata_keys: list,
     metadata_values: list,
     mr_access_token: str,
@@ -72,7 +72,7 @@ def new_project_fn(
     public: bool=False,
     verify: bool=True
 ):
-    project_dict = build_basic_project_dict(project_name, metadata_keys, metadata_values, newicks)
+    project_dict = build_basic_project_dict(project_name, metadata_keys, metadata_values, tree_calcs)
     json_data = dumps(project_dict)
     url = mr_base_url + '/api/projects/create/'
     if not public:

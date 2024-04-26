@@ -38,7 +38,7 @@ connection_string = getenv('BIO_API_MONGO_CONNECTION', 'mongodb://mongodb:27017/
 connection:pymongo.MongoClient = pymongo.MongoClient()
 db = connection.get_database('bio_api_test')
 trees_str: str = args.trees
-newicks = list()
+tree_calcs = list()
 if trees_str is None:
     tc = db['tree_calculations'].find_one()
     dmx_job_id = tc['dmx_job']
@@ -47,14 +47,14 @@ if trees_str is None:
     assert type(dmx_job['result']) is dict
     assert['seq_to_mongo'] in dmx_job['result']
     print(dmx_job)
-    newicks.append(tc['result'])
+    tree_calcs.append(tc)
 else:
     tree_ids = [ ObjectId(id) for id in trees_str.split(',') ]
     print("Tree ids:")
     print(tree_ids)
     tree_cursor = db['tree_calculations'].find({'_id': {'$in': tree_ids}})
     tc = next(tree_cursor)
-    newicks.append(tc['result'])
+    tree_calcs.append(tc)
     dmx_job_id = tc['dmx_job']
     dmx_job = db['dist_calculations'].find_one({'_id': ObjectId(dmx_job_id)})
     while True:
@@ -62,7 +62,7 @@ else:
             tc = next(tree_cursor)
             # Make sure that all trees are calculated from the same dmx job
             assert tc['dmx_job'] == dmx_job_id
-            newicks.append(tc['result'])
+            tree_calcs.append(tc)
         except StopIteration:
             break
 
@@ -76,7 +76,7 @@ for k, v in seq_to_mongo.items():
 
 rest_response = new_project_fn(
     project_name=args.project_name,
-    newicks=newicks,
+    tree_calcs=tree_calcs,
     metadata_keys=metadata_keys,
     metadata_values=metadata_values,
     mr_access_token=common.MICROREACT_ACCESS_TOKEN,
