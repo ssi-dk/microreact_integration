@@ -15,13 +15,14 @@ help_desc = ("Create a new project in Microreact using one or more trees defined
              "The MongoDB instance must contain a database named 'bio_api_test' containing a collection named 'tree_calculations.' "
              "A minimal data table will be generated automatically.")
 parser = argparse.ArgumentParser(description=help_desc)
-parser.add_argument("--trees",
-                    help=(
-                        "Mongo ID(s) for document(s) in tree_calculations collection. "
-                        "If more than one ID, separate with commas without spaces. "
-                        "If argument is omitted, a random tree tree_calculations collection will be chosen."
-                        )
-                    )
+parser.add_argument(
+    "--trees",
+        help=(
+            "Mongo ID(s) for document(s) in tree_calculations collection. "
+            "If more than one ID, separate with commas without spaces. "
+            "If argument is omitted, a random tree tree_calculations collection will be chosen."
+            )
+        )
 parser.add_argument(
     "--project_name",
     help="Project name (can be changed later in web interface)",
