@@ -44,3 +44,28 @@ The dicts must contain these keys:
 
 - method: str - this string will be used as name for the tree in Microreact
 - result: str - this is the actual tree structure formatted in Newick format
+
+#### metadata_keys
+
+This is a list of str elements that will be used as column names in the data table in Microreact.
+
+#### metadata_values
+
+This should be a list of lists where each element in the outer list represents a column in the data table and the elements in each inner list
+hold the actual data for that column.
+
+#### mr_access_token
+
+The access token (described above) for the users who will own the project in Microreact.
+
+#### mr_base_url
+
+The base URL for the Microreact instance.
+
+#### public
+
+Optional Booelan. If set to True, the create Microreact project will be public. Default is False.
+
+#### verify
+
+Optional Boolean. If set to False, it will not be checked if the Microreact instance has a valid SSL certificate. Default is True.
