@@ -9,17 +9,17 @@ def stringify(value_list):
     return line + "\n"
 
 
-def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_values: list, tree: str):
+def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_values: list, tree_calcs: list):
     """
-    Create a data structure that qualifies as a Microreact project and which can easily be used with the
+    Create a data structure that defines a Microreact project and which can easily be used with the
     Microreact projects/create API endpoint to create an actual project.
 
-    The project will contain a single tree and a data table, and will have no other elements.
+    The project will contain one or more trees and a data table, and will have no other elements.
 
     project_name: the name that will be shown for the project
     metadata_keys: keys of the metadata fields as a list. The first one will become the id field
     metadata_values: metadata values as a list of lists
-    tree: tree in Newick format
+    trees: list with trees in Newick format (as strings)
 
     Returns: a dict structure that is validated with MR's JSON schema and can be converted to JSON with json.dumps().
     """
@@ -32,30 +32,39 @@ def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_va
         metadata_body += stringify(record)
 
     metadata_file = classes.File(type='data', body=metadata_body)
-    newick_file = classes.File(type='tree', body=tree)
     dataset = classes.Dataset(file=metadata_file.id, idFieldName=id_field_name)
-    tree =  classes.Tree(
-            type='rc',
-            title='Tree',
-            labelField=id_field_name,
-            file=newick_file.id,
-            highlightedId=None
-        )
+
+    files = [metadata_file]
+    trees = list()
+    tree_number = 1
+    for tree_calc in tree_calcs:
+        newick_file = classes.File(type='tree', body=tree_calc['result'])
+        files.append(newick_file)
+        tree =  classes.Tree(
+                type='rc',
+                title=tree_calc['method'],
+                labelField=id_field_name,
+                file=newick_file.id,
+                highlightedId=None
+            )
+        trees.append(tree)
+        tree_number += 1
+
     table = classes.Table(title='Metadata', columns=metadata_keys, file=metadata_file.id)
 
     project = classes.Project(
         meta=project_meta,
         datasets=[dataset],
-        files=[metadata_file, newick_file],
+        files=files,
         tables=[table],
-        trees = [tree]
+        trees=trees
     )
 
     return project.to_dict()
 
-def new_project_fn(
+def new_project(
     project_name: str,
-    initial_tree: str,
+    tree_calcs: list,
     metadata_keys: list,
     metadata_values: list,
     mr_access_token: str,
@@ -63,7 +72,7 @@ def new_project_fn(
     public: bool=False,
     verify: bool=True
 ):
-    project_dict = build_basic_project_dict(project_name, metadata_keys, metadata_values, initial_tree)
+    project_dict = build_basic_project_dict(project_name, metadata_keys, metadata_values, tree_calcs)
     json_data = dumps(project_dict)
     url = mr_base_url + '/api/projects/create/'
     if not public:
@@ -79,7 +88,7 @@ def new_project_fn(
     )
     return rest_response
 
-def get_project_json_fn(
+def get_project_json(
     project_id: str,
     mr_access_token: str,
     mr_base_url: str,
@@ -96,7 +105,7 @@ def get_project_json_fn(
     )
     return rest_response
 
-def update_project_fn(
+def update_project(
     project_id: str,
     project_dict: dict,
     mr_access_token: str,
@@ -128,7 +137,7 @@ def add_element(project_dict:dict, section_name:str, new_element_dict:dict):
     return project_dict, new_element_id
 
 def add_tree_fn(project_id, newick, mr_access_token, mr_base_url, verify):
-    rest_response = get_project_json_fn(
+    rest_response = get_project_json(
         project_id=project_id,
         mr_access_token=mr_access_token,
         mr_base_url=mr_base_url,
@@ -147,7 +156,7 @@ def add_tree_fn(project_id, newick, mr_access_token, mr_base_url, verify):
     new_tree_dict = classes.Tree(file=new_file_id).to_dict()
     project_dict, _new_tree_id = add_element(project_dict, 'trees', new_tree_dict)
 
-    rest_response = update_project_fn(
+    rest_response = update_project(
         project_id=project_id,
         project_dict=project_dict,
         mr_access_token=mr_access_token,
