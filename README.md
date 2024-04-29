@@ -1,4 +1,4 @@
-# README for the microreact_integration package
+# README for the Microreact Integration package
 
 ## Functions in functions.py
 
@@ -20,21 +20,21 @@ The calling system should have a stored copy of this token for each user.
 
 Mandatory arguments:
 
-    - project_name: str
-    - tree_calcs: list
-    - metadata_keys: list
-    - metadata_values: list
-    - mr_access_token: str
-    - mr_base_url: str
+- project_name: str
+- tree_calcs: list
+- metadata_keys: list
+- metadata_values: list
+- mr_access_token: str
+- mr_base_url: str
 
 Optional arguments:
 
-    - public: bool=False
-    - verify: bool=True
+- public: bool=False
+- verify: bool=True
 
 #### project_name
 
-The name of the project as it will appear in Microreact. The project owner can later change the name from insiside Microreact.
+The name of the project as it will appear in Microreact. The project owner can later change the name from inside Microreact.
 
 #### tree_calcs
 
@@ -56,7 +56,7 @@ hold the actual data for that column.
 
 #### mr_access_token
 
-The access token (described above) for the users who will own the project in Microreact.
+The access token for the users who will own the project in Microreact.
 
 #### mr_base_url
 
@@ -64,7 +64,7 @@ The base URL for the Microreact instance.
 
 #### public
 
-Optional Booelan. If set to True, the create Microreact project will be public. Default is False.
+Optional Booelan. If set to True, the created Microreact project will be public. Default is False.
 
 #### verify
 
