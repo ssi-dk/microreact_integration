@@ -15,13 +15,29 @@ In order to use the functions, these prerequisites have to be made:
 
 ### new_project
 
-The function takes these arguments:
+Mandatory arguments:
 
-    - project_name: str,
-    - tree_calcs: list,
-    - metadata_keys: list,
-    - metadata_values: list,
-    - mr_access_token: str,
-    - mr_base_url: str,
-    - public: bool=False,
+    - project_name: str
+    - tree_calcs: list
+    - metadata_keys: list
+    - metadata_values: list
+    - mr_access_token: str
+    - mr_base_url: str
+
+Optional arguments:
+
+    - public: bool=False
     - verify: bool=True
+
+#### project_name
+
+The name of the project as it will appear in Microreact. The project owner can later change the name from insiside Microreact.
+
+#### tree_calcs
+
+A list of dicts (or dict-like objects like MongoDB documents) which represent the trees that should be exported to Microreact.
+
+The dicts must contain these keys:
+
+- method: str - this string will be used as title for the tree Microreact
+- result: str - this is the actual tree structure formatted in Newick format
