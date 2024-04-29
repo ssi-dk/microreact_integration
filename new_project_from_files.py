@@ -3,7 +3,7 @@ from datetime import datetime
 from pathlib import Path
 
 import common
-from functions import new_project_fn
+from functions import new_project
 
 parser = argparse.ArgumentParser(description="Create a new minimal project in Microreact using a tree and a metadata table from files.")
 parser.add_argument("tree", help="Path to a Newick file containing the initial tree")
@@ -37,7 +37,7 @@ with open(Path(args.metadata), 'r') as metadata_file:
 
 print(f"Name of created project will be {args.project_name}")
 
-rest_response = new_project_fn(
+rest_response = new_project(
     project_name=args.project_name,
     tree_calcs=[{'method': 'single', 'result': newick}],
     metadata_keys=metadata_keys,

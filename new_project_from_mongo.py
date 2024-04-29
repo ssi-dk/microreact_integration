@@ -8,7 +8,7 @@ import pymongo
 from bson.objectid import ObjectId
 
 import common
-from functions import new_project_fn
+from functions import new_project
 
 help_desc = ("Create a new project in Microreact using one or more trees defined in MongoDB. "
              "The script assumes a local MongoDB instance is running on default port and with no authentication requirements. "
@@ -75,7 +75,7 @@ metadata_values = list()
 for k, v in seq_to_mongo.items():
     metadata_values.append([k, v])
 
-rest_response = new_project_fn(
+rest_response = new_project(
     project_name=args.project_name,
     tree_calcs=tree_calcs,
     metadata_keys=metadata_keys,

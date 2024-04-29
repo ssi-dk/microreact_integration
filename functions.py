@@ -62,7 +62,7 @@ def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_va
 
     return project.to_dict()
 
-def new_project_fn(
+def new_project(
     project_name: str,
     tree_calcs: list,
     metadata_keys: list,
@@ -88,7 +88,7 @@ def new_project_fn(
     )
     return rest_response
 
-def get_project_json_fn(
+def get_project_json(
     project_id: str,
     mr_access_token: str,
     mr_base_url: str,
@@ -105,7 +105,7 @@ def get_project_json_fn(
     )
     return rest_response
 
-def update_project_fn(
+def update_project(
     project_id: str,
     project_dict: dict,
     mr_access_token: str,
@@ -137,7 +137,7 @@ def add_element(project_dict:dict, section_name:str, new_element_dict:dict):
     return project_dict, new_element_id
 
 def add_tree_fn(project_id, newick, mr_access_token, mr_base_url, verify):
-    rest_response = get_project_json_fn(
+    rest_response = get_project_json(
         project_id=project_id,
         mr_access_token=mr_access_token,
         mr_base_url=mr_base_url,
@@ -156,7 +156,7 @@ def add_tree_fn(project_id, newick, mr_access_token, mr_base_url, verify):
     new_tree_dict = classes.Tree(file=new_file_id).to_dict()
     project_dict, _new_tree_id = add_element(project_dict, 'trees', new_tree_dict)
 
-    rest_response = update_project_fn(
+    rest_response = update_project(
         project_id=project_id,
         project_dict=project_dict,
         mr_access_token=mr_access_token,
