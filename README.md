@@ -4,16 +4,16 @@
 
 These are the main functions meant for external use in functions.py:
 
-- new_project_fn
-- get_project_json_fn
-- update_project_fn
+- new_project
+- get_project_json
+- update_project
 
 In order to use the functions, these prerequisites have to be made:
 
 - A running instance of Microreact which can be accessed with http(s) from the location where Python is running
 - An access token that will permit creation of projects in Microreact
 
-### new_project_fn
+### new_project
 
 The function takes these arguments:
 
