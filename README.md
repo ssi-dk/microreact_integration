@@ -121,7 +121,8 @@ Usage:
 
 ### new_project_from_mongo.py
 
-This script will create a new project that will be owned by the user given by MICROREACT_ACCESS_TOKEN. The project will we a minimal project and will only contain a tree.
+This script will create a new project that will be owned by the user given by MICROREACT_ACCESS_TOKEN. The project will we a minimal project and will only contain
+one or more trees.
 
 Apart from the environment variables mentioned above, this script will also try to read the environment variable BIO_API_MONGO_CONNECTION.
 This variable will be used as an URL for a MongoDB instance containing a tree calculation (created with Bio API). This MongoDB instance does not need
@@ -130,7 +131,7 @@ If BIO_API_MONGO_CONNECTION is not set, the value will default to 'mongodb://mon
 
 Usage:
 
-    python new_project_from_mongo.py <--trees trees> <--project_name project_name>
+    python new_project_from_mongo.py <trees> <\<--project_name project_name\>>
 
 *trees*: Mongo ID(s) for document(s) in the 'tree_calculation' collection in the MongoDB instance given by BIO_API_MONGO_CONNECTION. If more than one tree, separate the ID swith commas without spaces. If argument is omitted, a random document from the tree_calculations collection will be chosen.
 
