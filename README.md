@@ -131,7 +131,7 @@ If BIO_API_MONGO_CONNECTION is not set, the value will default to 'mongodb://mon
 
 Usage:
 
-    python new_project_from_mongo.py <trees> <\<--project_name project_name\>>
+    python new_project_from_mongo.py <trees> [--project_name <project_name>]
 
 *trees*: Mongo ID(s) for document(s) in the 'tree_calculation' collection in the MongoDB instance given by BIO_API_MONGO_CONNECTION. If more than one tree, separate the ID swith commas without spaces. If argument is omitted, a random document from the tree_calculations collection will be chosen.
 
