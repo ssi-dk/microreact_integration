@@ -16,11 +16,10 @@ help_desc = ("Create a new project in Microreact using one or more trees defined
              "A minimal data table will be generated automatically.")
 parser = argparse.ArgumentParser(description=help_desc)
 parser.add_argument(
-    "--trees",
+    "trees",
         help=(
             "Mongo ID(s) for document(s) in tree_calculations collection. "
             "If more than one ID, separate with commas without spaces. "
-            "If argument is omitted, a random tree tree_calculations collection will be chosen."
             )
         )
 parser.add_argument(
@@ -40,35 +39,25 @@ connection:pymongo.MongoClient = pymongo.MongoClient()
 db = connection.get_database('bio_api_test')
 trees_str: str = args.trees
 tree_calcs = list()
-if trees_str is None:
-    tc = db['tree_calculations'].find_one()
-    dmx_job_id = tc['dmx_job']  #TODO unify
-    dmx_job = db['dist_calculations'].find_one({'_id': ObjectId(dmx_job_id)})
-    assert 'result' in dmx_job
-    assert type(dmx_job['result']) is dict
-    assert['seq_to_mongo'] in dmx_job['result']
-    print(dmx_job)
-    tree_calcs.append(tc)
-else:
-    tree_ids = [ ObjectId(id) for id in trees_str.split(',') ]
-    print("Tree ids:")
-    print(tree_ids)
-    tree_cursor = db['tree_calculations'].find({'_id': {'$in': tree_ids}})
-    tc = next(tree_cursor)
-    tree_calcs.append(tc)
-    dmx_job_id = tc['dmx_job']  #TODO unify
-    dmx_job = db['dist_calculations'].find_one({'_id': ObjectId(dmx_job_id)})
-    assert 'result' in dmx_job
-    assert type(dmx_job['result']) is dict
-    assert 'seq_to_mongo' in dmx_job['result']
-    while True:
-        try:
-            tc = next(tree_cursor)
-            # Make sure that all trees are calculated from the same dmx job
-            assert tc['dmx_job'] == dmx_job_id
-            tree_calcs.append(tc)
-        except StopIteration:
-            break
+tree_ids = [ ObjectId(id) for id in trees_str.split(',') ]
+print("Tree ids:")
+print(tree_ids)
+tree_cursor = db['tree_calculations'].find({'_id': {'$in': tree_ids}})
+tc = next(tree_cursor)
+tree_calcs.append(tc)
+dmx_job_id = tc['dmx_job']  #TODO unify
+dmx_job = db['dist_calculations'].find_one({'_id': ObjectId(dmx_job_id)})
+assert 'result' in dmx_job
+assert type(dmx_job['result']) is dict
+assert 'seq_to_mongo' in dmx_job['result']
+while True:
+    try:
+        tc = next(tree_cursor)
+        # Make sure that all trees are calculated from the same dmx job
+        assert tc['dmx_job'] == dmx_job_id
+        tree_calcs.append(tc)
+    except StopIteration:
+        break
 
 seq_to_mongo:dict = dmx_job['result']['seq_to_mongo']
 print("Seq to mongo:")
