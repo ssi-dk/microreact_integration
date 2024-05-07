@@ -42,7 +42,7 @@ trees_str: str = args.trees
 tree_calcs = list()
 if trees_str is None:
     tc = db['tree_calculations'].find_one()
-    dmx_job_id = tc['dmx_job']
+    dmx_job_id = tc['dmx_job']  #TODO unify
     dmx_job = db['dist_calculations'].find_one({'_id': ObjectId(dmx_job_id)})
     assert 'result' in dmx_job
     assert type(dmx_job['result']) is dict
@@ -56,8 +56,11 @@ else:
     tree_cursor = db['tree_calculations'].find({'_id': {'$in': tree_ids}})
     tc = next(tree_cursor)
     tree_calcs.append(tc)
-    dmx_job_id = tc['dmx_job']
+    dmx_job_id = tc['dmx_job']  #TODO unify
     dmx_job = db['dist_calculations'].find_one({'_id': ObjectId(dmx_job_id)})
+    assert 'result' in dmx_job
+    assert type(dmx_job['result']) is dict
+    assert 'seq_to_mongo' in dmx_job['result']
     while True:
         try:
             tc = next(tree_cursor)
