@@ -11,8 +11,8 @@ import common
 from functions import new_project
 
 help_desc = ("Create a new project in Microreact using one or more trees defined in MongoDB. "
-             "The script assumes a local MongoDB instance is running on default port and with no authentication requirements. "
-             "The MongoDB instance must contain a database named 'bio_api_test' containing a collection named 'tree_calculations.' "
+             "The script depends on a MongoDB database defined by BIO_API_MONGO_CONNECTION, or in the case this environment "
+             "variable is not set, a MongoDB database on mongodb://mongodb:27017/bio_api_test. "
              "A minimal data table will be generated automatically.")
 parser = argparse.ArgumentParser(description=help_desc)
 parser.add_argument(
