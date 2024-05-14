@@ -1,14 +1,23 @@
 import argparse
 from datetime import datetime
-from pathlib import Path
 from os import getenv
 from sys import exit
+from string import ascii_letters,digits 
+from random import choice
 
 import pymongo
 from bson.objectid import ObjectId
 
 import common
 from functions import new_project
+
+ 
+lettersdigits=ascii_letters+digits 
+ 
+def random_string(n): 
+   my_list = [choice(lettersdigits) for _ in range(n)] 
+   my_str = ''.join(my_list) 
+   return my_str
 
 help_desc = ("Create a test project in Microreact using one or more trees and some dummy data. "
              "The script depends on a MongoDB database defined by BIO_API_MONGO_CONNECTION, or in the case this environment "
@@ -64,16 +73,23 @@ while True:
 # Create minimal metadata set
 seq_to_mongo:dict = dmx_job['result']['seq_to_mongo']
 metadata_keys = ['seq_id', 'db_id']
-print("Metadata keys:")
-print(metadata_keys)
-print()
+
 metadata_values = list()
 for k, v in seq_to_mongo.items():
     metadata_values.append([k, str(v)])
+
+# Add fake encrypted metadata
+metadata_keys.extend(['cpr', 'navn', 'mk', 'alder', 'landnavn', 'kmanavn'])
+row: list
+for row in metadata_values:
+    for n in range(6):
+        row.append(random_string(10))
+
+print("Metadata keys:")
+print(metadata_keys)
+print()
 print("Metadata values:")
 print(metadata_values)
-
-exit()
 
 rest_response = new_project(
     project_name=args.project_name,
