@@ -1,5 +1,5 @@
 import argparse
-from pathlib import Path
+from json import dumps
 
 import common
 from functions import get_project_json
@@ -19,5 +19,6 @@ rest_response = get_project_json(
     mr_base_url=common.MICROREACT_BASE_URL,
     verify = not args.noverify
     )
-print(f"REST response: {str(rest_response)}")
-print(rest_response.json())
+print(f"HTTP response code: {str(rest_response)}")
+print("Response as actual JSON:")
+print(dumps(rest_response.json()))
