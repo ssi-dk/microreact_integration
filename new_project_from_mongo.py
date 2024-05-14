@@ -61,13 +61,19 @@ while True:
     except StopIteration:
         break
 
+# Create minimal metadata set
 seq_to_mongo:dict = dmx_job['result']['seq_to_mongo']
-print("Seq to mongo:")
-print(seq_to_mongo)
 metadata_keys = ['seq_id', 'db_id']
+print("Metadata keys:")
+print(metadata_keys)
+print()
 metadata_values = list()
 for k, v in seq_to_mongo.items():
-    metadata_values.append([k, v])
+    metadata_values.append([k, str(v)])
+print("Metadata values:")
+print(metadata_values)
+
+exit()
 
 rest_response = new_project(
     project_name=args.project_name,
