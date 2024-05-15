@@ -1,6 +1,7 @@
 import argparse
 from datetime import datetime
 from pathlib import Path
+from json import dumps
 
 import common
 from functions import new_project
@@ -46,5 +47,6 @@ rest_response = new_project(
     mr_base_url=common.MICROREACT_BASE_URL,
     verify = not args.noverify
     )
-print(f"REST response: {str(rest_response)}")
-print(rest_response.json())
+print(f"HTTP response code: {str(rest_response)}")
+print("Response as actual JSON:")
+print(dumps(rest_response.json()))

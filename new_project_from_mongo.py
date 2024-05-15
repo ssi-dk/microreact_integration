@@ -1,7 +1,7 @@
 import argparse
 from datetime import datetime
 from os import getenv
-from sys import exit
+from json import dumps
 from string import ascii_letters,digits 
 from random import choice
 
@@ -107,5 +107,6 @@ rest_response = new_project(
     mr_base_url=common.MICROREACT_BASE_URL,
     verify = not args.noverify
     )
-print(f"REST response: {str(rest_response)}")
-print(rest_response.json())
+print(f"HTTP response code: {str(rest_response)}")
+print("Response as actual JSON:")
+print(dumps(rest_response.json()))
