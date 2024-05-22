@@ -97,6 +97,11 @@ print()
 print("Metadata values:")
 print(metadata_values)
 
+# Create a distance matrix Vega-Lite component
+# First, get the distance matrix from Bio API
+# dmx_from_bio_api = call_dmx_result(dmx_job_id)
+# print(dmx_from_bio_api)
+
 rest_response = new_project(
     project_name=args.project_name,
     tree_calcs=tree_calcs,
