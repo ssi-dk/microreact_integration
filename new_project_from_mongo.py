@@ -11,6 +11,11 @@ from bson.objectid import ObjectId
 import common
 from functions import new_project
 
+try:
+    from ..client_functions import call_dmx_result
+except ImportError:
+    print("Could not import call_dmx_result from Bio API. Some functionality will be disabled.")
+
  
 lettersdigits=ascii_letters+digits 
  
@@ -60,8 +65,6 @@ dmx_job_id = tc['dmx_job']  #TODO unify
 print(f"DMX job id: {dmx_job_id}")
 dmx_job = db['dist_calculations'].find_one({'_id': ObjectId(dmx_job_id)})
 assert 'result' in dmx_job
-print("Distance matrix:")
-print(dmx_job['result'])
 assert type(dmx_job['result']) is dict
 assert 'seq_to_mongo' in dmx_job['result']
 while True:
