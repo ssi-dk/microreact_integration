@@ -57,8 +57,11 @@ tree_cursor = db['tree_calculations'].find({'_id': {'$in': tree_ids}})
 tc = next(tree_cursor)
 tree_calcs.append(tc)
 dmx_job_id = tc['dmx_job']  #TODO unify
+print(f"DMX job id: {dmx_job_id}")
 dmx_job = db['dist_calculations'].find_one({'_id': ObjectId(dmx_job_id)})
 assert 'result' in dmx_job
+print("Distance matrix:")
+print(dmx_job['result'])
 assert type(dmx_job['result']) is dict
 assert 'seq_to_mongo' in dmx_job['result']
 while True:
