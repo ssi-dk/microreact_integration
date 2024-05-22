@@ -91,13 +91,6 @@ for row in metadata_values:
     for n in range(6):
         row.append(random_string(10))
 
-# Add URL fields
-metadata_keys.extend(['cpr__url', 'navn__url', 'mk__url', 'alder__url', 'landnavn__url', 'kmanavn__url'])
-row: list
-for row in metadata_values:
-    for n in range(6):
-        row.append('https://test.sofi-platform.dk/')
-
 print("Metadata keys:")
 print(metadata_keys)
 print()
