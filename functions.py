@@ -1,8 +1,7 @@
 from json import dumps
 import requests
 
-import classes
-from common import validate_json
+from microreact_integration import classes
 
 def stringify(value_list):
     line = ";".join([str(value) for value in value_list])

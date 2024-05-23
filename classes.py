@@ -4,7 +4,7 @@ from abc import ABC
 from typing import Optional
 from uuid import uuid4
 
-from common import validate_json
+from microreact_integration.common import validate_json
 
 @dataclass
 class Meta:
