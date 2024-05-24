@@ -8,7 +8,13 @@ def stringify(value_list):
     return line + "\n"
 
 
-def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_values: list, tree_calcs: list):
+def build_basic_project_dict(
+        project_name: str,
+        metadata_keys: list,
+        metadata_values: list,
+        tree_calcs: list,
+        distances: dict | None = None
+        ):
     """
     Create a data structure that defines a Microreact project and which can easily be used with the
     Microreact projects/create API endpoint to create an actual project.
@@ -18,7 +24,8 @@ def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_va
     project_name: the name that will be shown for the project
     metadata_keys: keys of the metadata fields as a list. The first one will become the id field
     metadata_values: metadata values as a list of lists
-    trees: list with trees in Newick format (as strings)
+    tree_calcs: dict from Bio API with tree calculation (we need the 'method' field, so it's not enough with just the tree)
+    distances: dict with distances, optional
 
     Returns: a dict structure that is validated with MR's JSON schema and can be converted to JSON with json.dumps().
     """
