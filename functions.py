@@ -73,12 +73,13 @@ def new_project(
     tree_calcs: list,
     metadata_keys: list,
     metadata_values: list,
+    distances: dict,
     mr_access_token: str,
     mr_base_url: str,
     public: bool=False,
     verify: bool=True
 ):
-    project_dict = build_basic_project_dict(project_name, metadata_keys, metadata_values, tree_calcs)
+    project_dict = build_basic_project_dict(project_name, metadata_keys, metadata_values, tree_calcs, distances=distances)
     json_data = dumps(project_dict)
     url = mr_base_url + '/api/projects/create/'
     if not public:
