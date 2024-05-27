@@ -56,7 +56,8 @@ def build_basic_project_dict(
         trees.append(tree)
         tree_number += 1
 
-    main_table = classes.Table(title='Metadata', columns=metadata_keys, file=metadata_file.id)
+    main_table = classes.Table(title='Main table', columns=metadata_keys, file=metadata_file.id)
+    tables = [main_table]
 
     # If distances are provided, add both an extra file and an extra table
     if distances:
@@ -67,13 +68,15 @@ def build_basic_project_dict(
         mimetype='data:application/json;base64',
         format='text/json'
         )
-    files.append(distance_file)
+        files.append(distance_file)
+        distance_table = classes.Table(title='Distance table', columns=distances.keys(), file=distance_file.id)
+        tables.append(distance_table)
 
     project = classes.Project(
         meta=project_meta,
         datasets=[dataset],
         files=files,
-        tables=[main_table],
+        tables=tables,
         trees=trees
     )
 
