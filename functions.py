@@ -46,14 +46,6 @@ def build_basic_project_dict(
     for tree_calc in tree_calcs:
         newick_file = classes.File(type='tree', body=tree_calc['result'])
         files.append(newick_file)
-        distance_file = classes.File(
-            type='data',
-            body=dumps(distances),
-            name='distances.json',
-            mimetype='data:application/json;base64',
-            format='text/json'
-            )
-        files.append(distance_file)
         tree =  classes.Tree(
                 type='rc',
                 title=tree_calc['method'],
@@ -64,13 +56,24 @@ def build_basic_project_dict(
         trees.append(tree)
         tree_number += 1
 
-    table = classes.Table(title='Metadata', columns=metadata_keys, file=metadata_file.id)
+    main_table = classes.Table(title='Metadata', columns=metadata_keys, file=metadata_file.id)
+
+    # If distances are provided, add both an extra file and an extra table
+    if distances:
+        distance_file = classes.File(
+        type='data',
+        body=dumps(distances),
+        name='distances.json',
+        mimetype='data:application/json;base64',
+        format='text/json'
+        )
+    files.append(distance_file)
 
     project = classes.Project(
         meta=project_meta,
         datasets=[dataset],
         files=files,
-        tables=[table],
+        tables=[main_table],
         trees=trees
     )
 
