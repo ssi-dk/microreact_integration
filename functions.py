@@ -1,4 +1,4 @@
-from json import dumps
+from json import dumps, dump
 import requests
 
 from microreact_integration import classes
@@ -19,13 +19,13 @@ def build_basic_project_dict(
     Create a data structure that defines a Microreact project and which can easily be used with the
     Microreact projects/create API endpoint to create an actual project.
 
-    The project will contain one or more trees and a data table, and will have no other elements.
+    The project will contain one or more trees and data table, and aoptionally some extra elements.
 
     project_name: the name that will be shown for the project
     metadata_keys: keys of the metadata fields as a list. The first one will become the id field
     metadata_values: metadata values as a list of lists
     tree_calcs: dict from Bio API with tree calculation (we need the 'method' field, so it's not enough with just the tree)
-    distances: dict with distances, optional
+    distances: dict with genomic distances, optional
 
     Returns: a dict structure that is validated with MR's JSON schema and can be converted to JSON with json.dumps().
     """
@@ -46,6 +46,14 @@ def build_basic_project_dict(
     for tree_calc in tree_calcs:
         newick_file = classes.File(type='tree', body=tree_calc['result'])
         files.append(newick_file)
+        distance_file = classes.File(
+            type='data',
+            body=dumps(distances),
+            name='distances.json',
+            mimetype='application/json',
+            format='text/json'
+            )
+        files.append(distance_file)
         tree =  classes.Tree(
                 type='rc',
                 title=tree_calc['method'],
