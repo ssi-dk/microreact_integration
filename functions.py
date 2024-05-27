@@ -50,7 +50,7 @@ def build_basic_project_dict(
             type='data',
             body=dumps(distances),
             name='distances.json',
-            mimetype='application/json',
+            mimetype='data:application/json;base64',
             format='text/json'
             )
         files.append(distance_file)
