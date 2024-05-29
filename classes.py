@@ -148,6 +148,36 @@ class Tree(Element):
             "highligthedId": self.highlightedId
         }
 
+
+@dataclass
+class Chart(Element):
+    controls: bool
+    interpolate: str
+    seriesStacking: str
+    xAxisLabelLimit: int
+    yAxisLabelLimit: int
+    title: str
+    paneId: str
+    type: str
+    xAxisField: str
+
+    def __post_init__(self):
+        super().set_id()
+
+    def to_dict(self):
+        return {
+        'controls': self.controls,
+        'interpolate': self.interpolate,
+        'seriesStacking': self.seriesStacking,
+        'xAxisLabelLimit': self.xAxisLabelLimit,
+        'yAxisLabelLimit': self.yAxisLabelLimit,
+        'title': self.title,
+        'paneId': self.paneId,
+        'type': self.type,
+        'xAxisField': self.xAxisField
+        }
+
+
 @dataclass
 class Project:
     """Main class for structuring data that will be sent to Microreact when creating a new project.
