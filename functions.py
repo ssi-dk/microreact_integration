@@ -1,7 +1,7 @@
 from json import dumps
 import requests
 
-from microreact_integration import classes
+from . import classes
 
 def stringify(value_list):
     line = ";".join([str(value) for value in value_list])
