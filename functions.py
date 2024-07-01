@@ -1,4 +1,4 @@
-from json import dumps
+from json import dumps, dump
 import requests
 
 from . import classes
@@ -86,6 +86,18 @@ def new_project(
         verify=verify
     )
     return rest_response
+
+def new_project_file(
+    project_name: str,
+    tree_calcs: list,
+    metadata_keys: list,
+    metadata_values: list,
+    file_name: str
+):
+    project_dict = build_basic_project_dict(project_name, metadata_keys, metadata_values, tree_calcs)
+    with open(file_name , "w") as f:
+        dump(project_dict, f)
+    print(f"Saved {file_name}")
 
 def get_project_json(
     project_id: str,
