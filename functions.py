@@ -89,11 +89,11 @@ def new_project(
 
 def new_project_2(
     project_name: str,
-    tree_calcs: list,
     metadata_keys: list,
     metadata_values: list,
     mr_access_token: str,
     mr_base_url: str,
+    tree_calcs: list = list(),
     public: bool=False,
     verify: bool=True
 ):
