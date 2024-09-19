@@ -89,29 +89,30 @@ def new_project(
 
 def new_project_2(
     project_name: str,
-    metadata_keys: list,
-    metadata_values: list,
+    metadata_url: str,
     mr_access_token: str,
     mr_base_url: str,
     tree_calcs: list = list(),
     public: bool=False,
     verify: bool=True
 ):
-    project_dict = build_basic_project_dict(project_name, metadata_keys, metadata_values, tree_calcs)
-    json_data = dumps(project_dict)
-    url = mr_base_url + '/api/projects/create/'
-    if not public:
-        url = url + '?access=private'
-    rest_response = requests.post(
-        url,
-        headers= {
-            'Content-Type': 'application/json; charset=utf-8',
-            'Access-Token': mr_access_token
-            },
-        data=json_data,
-        verify=verify
-    )
-    return rest_response
+    print(f"Metadata URL: {metadata_url}")
+    return "OK"
+    # project_dict = build_basic_project_dict(project_name, metadata_keys, metadata_values, tree_calcs)
+    # json_data = dumps(project_dict)
+    # url = mr_base_url + '/api/projects/create/'
+    # if not public:
+    #     url = url + '?access=private'
+    # rest_response = requests.post(
+    #     url,
+    #     headers= {
+    #         'Content-Type': 'application/json; charset=utf-8',
+    #         'Access-Token': mr_access_token
+    #         },
+    #     data=json_data,
+    #     verify=verify
+    # )
+    # return rest_response
 
 def new_project_file(
     project_name: str,
