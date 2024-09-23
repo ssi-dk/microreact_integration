@@ -152,7 +152,7 @@ def new_project_2(
     print("My JSON data:")
     print(json_data)
     print()
-    with open("input_data/Project with external data.microreact", 'r') as f:
+    with open("input_data/khalils_project.microreact.json", 'r') as f:
         json_data_2 = load(f)
     print("JSON data actually being sent:")
     print(json_data_2)
