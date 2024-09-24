@@ -61,7 +61,11 @@ def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_va
 
     return project.to_dict()
 
-def build_basic_project_dict_2(project_name: str, metadata_url: str, tree_calcs: list):
+def build_basic_project_dict_2(
+        project_name: str,
+        metadata_url: str,
+        columns: list,
+        tree_calcs: list):
     """
     Create a data structure that defines a Microreact project and which can easily be used with the
     Microreact projects/create API endpoint to create an actual project.
@@ -75,9 +79,7 @@ def build_basic_project_dict_2(project_name: str, metadata_url: str, tree_calcs:
     Returns: a dict structure that is validated with MR's JSON schema and can be converted to JSON with json.dumps().
     """
     project_meta = classes.Meta(name=project_name)
-    # id_field_name = metadata_keys[0]
-    # id_field_name = 'key'  #TODO How do we determine id_field_name? Exactly why is this important?
-    id_field_name = 'id'  # Quick and dirty hack. It IS important!
+    id_field_name = columns[0]
 
     metadata_file = classes.File(type='data', url=metadata_url)
     dataset = classes.Dataset(file=metadata_file.id, idFieldName=id_field_name)
@@ -99,7 +101,7 @@ def build_basic_project_dict_2(project_name: str, metadata_url: str, tree_calcs:
         tree_number += 1
 
     table = classes.Table(title='Metadata',
-                          columns=["id", "__latitude", "__longitude", "Country", "Pedalism"],  # TODO quick and dirty, just for now
+                          columns=columns,
                           file=metadata_file.id,
                           dataset=dataset.id
                           )
@@ -143,6 +145,7 @@ def new_project(
 def new_project_2(
     project_name: str,
     metadata_url: str,
+    columns: str,
     mr_access_token: str,
     mr_base_url: str,
     tree_calcs: list = list(),
@@ -150,7 +153,7 @@ def new_project_2(
     verify: bool=True
 ):
     print(f"Metadata URL: {metadata_url}")
-    project_dict = build_basic_project_dict_2(project_name, metadata_url, tree_calcs)
+    project_dict = build_basic_project_dict_2(project_name, metadata_url, columns, tree_calcs)
     json_data = dumps(project_dict, indent=4)
     print("My JSON data:")
     print(json_data)
