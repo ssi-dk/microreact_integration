@@ -153,7 +153,7 @@ def new_project_2(
     print(json_data)
     print()
     with open("input_data/khalils_project.microreact.json", 'r') as f:
-        json_data_2 = load(f)
+        json_data_2 = f.read()
     print("JSON data actually being sent:")
     print(json_data_2)
     url = mr_base_url + '/api/projects/create/'
