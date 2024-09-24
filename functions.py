@@ -76,7 +76,8 @@ def build_basic_project_dict_2(project_name: str, metadata_url: str, tree_calcs:
     """
     project_meta = classes.Meta(name=project_name)
     # id_field_name = metadata_keys[0]
-    id_field_name = 'key'  #TODO How do we determine id_field_name? Exactly why is this important?
+    # id_field_name = 'key'  #TODO How do we determine id_field_name? Exactly why is this important?
+    id_field_name = 'id'  # Quick and dirty hack. It IS important!
 
     metadata_file = classes.File(type='data', url=metadata_url)
     dataset = classes.Dataset(file=metadata_file.id, idFieldName=id_field_name)
@@ -99,7 +100,9 @@ def build_basic_project_dict_2(project_name: str, metadata_url: str, tree_calcs:
 
     table = classes.Table(title='Metadata',
                           columns=["Dataset 1", "Dataset 2", "Dataset 3"],  # TODO quick and dirty, just for now
-                          file=metadata_file.id)
+                          file=metadata_file.id,
+                          dataset=dataset.id
+                          )
 
     project = classes.Project(
         meta=project_meta,
@@ -152,10 +155,10 @@ def new_project_2(
     print("My JSON data:")
     print(json_data)
     print()
-    with open("input_data/khalils_project.microreact.json", 'r') as f:
-        json_data_2 = f.read()
-    print("JSON data actually being sent:")
-    print(json_data_2)
+    # with open("input_data/khalils_project.microreact.json", 'r') as f:
+    #     json_data_2 = f.read()
+    # print("JSON data actually being sent:")
+    # print(json_data_2)
     url = mr_base_url + '/api/projects/create/'
     if not public:
         url = url + '?access=private'
@@ -165,7 +168,7 @@ def new_project_2(
             'Content-Type': 'application/json; charset=utf-8',
             'Access-Token': mr_access_token
             },
-        data=json_data_2,
+        data=json_data,
         verify=verify
     )
     print("response.content:")
