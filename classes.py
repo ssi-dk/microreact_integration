@@ -93,7 +93,7 @@ class File(Element):
                 "type": self.type,
                 "name": self.name,
                 "format": self.format,
-                "blob": self.url
+                "url": self.url
             }
         else:
             raise ValueError("File object must contain either body or url")
