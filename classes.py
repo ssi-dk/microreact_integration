@@ -108,6 +108,7 @@ class Table(Element):
     title: str
     columns: list
     file: str
+    dataset: str  # TODO Should this be optional? There might be cases in my code where I don't use it
 
     def __post_init__(self):
         super().set_id()
