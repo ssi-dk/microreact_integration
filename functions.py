@@ -99,7 +99,7 @@ def build_basic_project_dict_2(project_name: str, metadata_url: str, tree_calcs:
         tree_number += 1
 
     table = classes.Table(title='Metadata',
-                          columns=["Dataset 1", "Dataset 2", "Dataset 3"],  # TODO quick and dirty, just for now
+                          columns=["id", "__latitude", "__longitude", "Country", "Pedalism"],  # TODO quick and dirty, just for now
                           file=metadata_file.id,
                           dataset=dataset.id
                           )
