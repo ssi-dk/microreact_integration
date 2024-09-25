@@ -50,7 +50,8 @@ class Dataset(Element):
 @dataclass
 class File(Element):
     type: str
-    body: str
+    body: Optional[str] = None
+    url: Optional[str] = None
     name: Optional[str] = ''
     format: Optional[str] = ''
     mimetype: Optional[str] = ''
@@ -75,16 +76,27 @@ class File(Element):
             raise ValueError("Invalid file type: " + type)
     
     def to_dict(self):
-        blob = b64encode(self.body.encode('utf-8'))
-        blob_str = str(blob)
-        blob_str = blob_str[2:-1]
-        return {
-            "id": self.id,
-            "type": self.type,
-            "name": self.name,
-            "format": self.format,
-            "blob": self.mimetype + ',' + blob_str
-        }
+        if self.body:
+            blob = b64encode(self.body.encode('utf-8'))
+            blob_str = str(blob)
+            blob_str = blob_str[2:-1]
+            return {
+                "id": self.id,
+                "type": self.type,
+                "name": self.name,
+                "format": self.format,
+                "blob": self.mimetype + ',' + blob_str
+            }
+        elif self.url:
+            return {
+                "id": self.id,
+                "type": self.type,
+                "name": self.name,
+                "format": self.format,
+                "url": self.url
+            }
+        else:
+            raise ValueError("File object must contain either body or url")
 
 @dataclass
 class Column:
@@ -96,6 +108,7 @@ class Table(Element):
     title: str
     columns: list
     file: str
+    dataset: str  # TODO Should this be optional? There might be cases in my code where I don't use it
 
     def __post_init__(self):
         super().set_id()

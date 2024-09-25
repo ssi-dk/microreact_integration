@@ -1,4 +1,4 @@
-from json import dumps, dump
+from json import dumps, dump, load
 import requests
 
 from . import classes
@@ -61,6 +61,61 @@ def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_va
 
     return project.to_dict()
 
+def build_basic_project_dict_2(
+        project_name: str,
+        metadata_url: str,
+        columns: list,
+        tree_calcs: list):
+    """
+    Create a data structure that defines a Microreact project and which can easily be used with the
+    Microreact projects/create API endpoint to create an actual project.
+
+    The project will contain zero or more trees and a data table, and will have no other elements.
+
+    project_name: the name that will be shown for the project
+    metadata_url: url containing af metadatalist. The first column will become the id field
+    trees: list with trees in Newick format (as strings)
+
+    Returns: a dict structure that is validated with MR's JSON schema and can be converted to JSON with json.dumps().
+    """
+    project_meta = classes.Meta(name=project_name)
+    id_field_name = columns[0]
+
+    metadata_file = classes.File(type='data', url=metadata_url)
+    dataset = classes.Dataset(file=metadata_file.id, idFieldName=id_field_name)
+
+    files = [metadata_file]
+    trees = list()
+    tree_number = 1
+    for tree_calc in tree_calcs:
+        newick_file = classes.File(type='tree', body=tree_calc['result'])
+        files.append(newick_file)
+        tree =  classes.Tree(
+                type='rc',
+                title=tree_calc['method'],
+                labelField=id_field_name,
+                file=newick_file.id,
+                highlightedId=None
+            )
+        trees.append(tree)
+        tree_number += 1
+
+    table = classes.Table(title='Metadata',
+                          columns=columns,
+                          file=metadata_file.id,
+                          dataset=dataset.id
+                          )
+
+    project = classes.Project(
+        meta=project_meta,
+        datasets=[dataset],
+        files=files,
+        tables=[table],
+        trees=trees
+    )
+
+    return project.to_dict()
+
 def new_project(
     project_name: str,
     tree_calcs: list,
@@ -85,6 +140,35 @@ def new_project(
         data=json_data,
         verify=verify
     )
+    return rest_response
+
+def new_project_2(
+    project_name: str,
+    metadata_url: str,
+    columns: list,
+    mr_access_token: str,
+    mr_base_url: str,
+    tree_calcs: list = list(),
+    public: bool=False,
+    verify: bool=True
+):
+    print(f"Metadata URL: {metadata_url}")
+    project_dict = build_basic_project_dict_2(project_name, metadata_url, columns, tree_calcs)
+    json_data = dumps(project_dict, indent=4)
+    url = mr_base_url + '/api/projects/create/'
+    if not public:
+        url = url + '?access=private'
+    rest_response = requests.post(
+        url,
+        headers= {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Access-Token': mr_access_token
+            },
+        data=json_data,
+        verify=verify
+    )
+    print("response.content:")
+    print(rest_response.content)
     return rest_response
 
 def new_project_file(
