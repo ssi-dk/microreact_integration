@@ -145,7 +145,7 @@ def new_project(
 def new_project_2(
     project_name: str,
     metadata_url: str,
-    columns: str,
+    columns: list,
     mr_access_token: str,
     mr_base_url: str,
     tree_calcs: list = list(),
