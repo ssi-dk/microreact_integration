@@ -155,13 +155,6 @@ def new_project_2(
     print(f"Metadata URL: {metadata_url}")
     project_dict = build_basic_project_dict_2(project_name, metadata_url, columns, tree_calcs)
     json_data = dumps(project_dict, indent=4)
-    print("My JSON data:")
-    print(json_data)
-    print()
-    with open("input_data/khalils_project.microreact.json", 'r') as f:
-        json_data_2 = f.read()
-    print("JSON data actually being sent:")
-    print(json_data_2)
     url = mr_base_url + '/api/projects/create/'
     if not public:
         url = url + '?access=private'
@@ -171,7 +164,7 @@ def new_project_2(
             'Content-Type': 'application/json; charset=utf-8',
             'Access-Token': mr_access_token
             },
-        data=json_data_2,
+        data=json_data,
         verify=verify
     )
     print("response.content:")
