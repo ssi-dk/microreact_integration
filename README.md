@@ -106,9 +106,9 @@ The name of the project as it will appear in Microreact. The project owner can l
 
 Thie URL to fetch the metadata from.
 
-##### metadata_values
+##### columns
 
-A list of column names to be fetched.
+A list of column names to be fetched from the external resource. Only the columns listed here will actually be fetched.
 
 ##### mr_access_token
 
