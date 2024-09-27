@@ -95,6 +95,7 @@ Mandatory arguments:
 Optional arguments:
 
 - tree_calcs: list=list()
+- hidden: list=list()
 - public: bool=False
 - verify: bool=True
 
@@ -126,6 +127,9 @@ The dicts must contain these keys:
 
 - method: str - this string will be used as name for the tree in Microreact
 - result: str - this is the actual tree structure formatted in Newick format
+
+##### hidden
+A list of columns that should be hidden in the Microreact project.
 
 ##### public
 
