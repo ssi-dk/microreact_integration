@@ -167,8 +167,6 @@ def new_project_2(
         data=json_data,
         verify=verify
     )
-    print("response.content:")
-    print(rest_response.content)
     return rest_response
 
 def new_project_file(
