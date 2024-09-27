@@ -109,6 +109,7 @@ class Table(Element):
     columns: list
     file: str
     dataset: str  # TODO Should this be optional? There might be cases in my code where I don't use it
+    hidden: list
 
     def __post_init__(self):
         super().set_id()
@@ -118,7 +119,8 @@ class Table(Element):
         for column in self.columns:
             col_list.append(					{
 						"field": column,
-						"fixed": False
+						"fixed": False,
+                        "hidden": True if column in self.hidden else False
 					},)
         return col_list
     

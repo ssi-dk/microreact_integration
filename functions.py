@@ -65,7 +65,9 @@ def build_basic_project_dict_2(
         project_name: str,
         metadata_url: str,
         columns: list,
-        tree_calcs: list):
+        tree_calcs: list,
+        hidden: list=list()
+        ):
     """
     Create a data structure that defines a Microreact project and which can easily be used with the
     Microreact projects/create API endpoint to create an actual project.
@@ -74,7 +76,10 @@ def build_basic_project_dict_2(
 
     project_name: the name that will be shown for the project
     metadata_url: url containing af metadatalist. The first column will become the id field
-    trees: list with trees in Newick format (as strings)
+    columns: list of columns to read from metadata_url. Only these column will exist in the Microreact project,
+    and per default all columns will be visible.
+    tree_calcs: list with trees in Newick format (as strings)
+    hidden: an optional list of columns to be marked and hidden in the Microreact project.
 
     Returns: a dict structure that is validated with MR's JSON schema and can be converted to JSON with json.dumps().
     """
@@ -103,7 +108,8 @@ def build_basic_project_dict_2(
     table = classes.Table(title='Metadata',
                           columns=columns,
                           file=metadata_file.id,
-                          dataset=dataset.id
+                          dataset=dataset.id,
+                          hidden=hidden
                           )
 
     project = classes.Project(
@@ -149,11 +155,12 @@ def new_project_2(
     mr_access_token: str,
     mr_base_url: str,
     tree_calcs: list = list(),
+    hidden:list = list(),
     public: bool=False,
     verify: bool=True
 ):
     print(f"Metadata URL: {metadata_url}")
-    project_dict = build_basic_project_dict_2(project_name, metadata_url, columns, tree_calcs)
+    project_dict = build_basic_project_dict_2(project_name, metadata_url, columns, tree_calcs, hidden)
     json_data = dumps(project_dict, indent=4)
     url = mr_base_url + '/api/projects/create/'
     if not public:
