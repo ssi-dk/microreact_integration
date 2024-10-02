@@ -8,7 +8,7 @@ def stringify(value_list):
     return line + "\n"
 
 
-def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_values: list, tree_calcs: list):
+def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_values: list, tree_calcs: list, hidden: list=list()):
     """
     Create a data structure that defines a Microreact project and which can easily be used with the
     Microreact projects/create API endpoint to create an actual project.
@@ -49,7 +49,7 @@ def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_va
         trees.append(tree)
         tree_number += 1
 
-    table = classes.Table(title='Metadata', columns=metadata_keys, file=metadata_file.id)
+    table = classes.Table(title='Metadata', columns=metadata_keys, file=metadata_file.id, hidden=hidden, dataset=dataset)
 
     project = classes.Project(
         meta=project_meta,
@@ -130,6 +130,7 @@ def new_project(
     mr_access_token: str,
     mr_base_url: str,
     public: bool=False,
+    hidden:list = list(),
     verify: bool=True
 ):
     project_dict = build_basic_project_dict(project_name, metadata_keys, metadata_values, tree_calcs)
