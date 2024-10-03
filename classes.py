@@ -211,7 +211,8 @@ class Project:
     timelines: list = field(default_factory=list)
     views: list = field(default_factory=list)
 
-    schema: str="https://microreact.org/schema/v1.json"
+    # schema_url is not actively used for anything; it is just a reference.
+    schema_url: str="https://microreact.org/schema/v1.json"
 
     def get_sections(self):
         return [
@@ -241,7 +242,7 @@ class Project:
     
     def to_dict(self):
         output_dict = {
-            'schema': self.schema,
+            'schema': self.schema_url,
             'meta': self.meta.to_dict()
         }
         for section in self.get_sections():
