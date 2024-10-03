@@ -14,7 +14,7 @@ def build_basic_project_dict(
         metadata_keys: list,
         metadata_values: list,
         tree_calcs: list,
-        distances: Optional[str]=None,
+        raw_matrices: list=list(),
         hidden: list=list()):
     """
     Create a Microreact project where the metadata table is constructed from lists of keys and values.
@@ -55,12 +55,20 @@ def build_basic_project_dict(
 
     table = classes.Table(title='Metadata', columns=metadata_keys, file=metadata_file.id, hidden=hidden, dataset=dataset)
 
+    matrices = list()
+    for raw_matrix in raw_matrices:
+        matrix_file = classes.File(type='data', body=raw_matrix, name="Matrix " + str(len(raw_matrices) + 1))
+        files.append(matrix_file)
+        matrix=classes.Matrix(file=matrix_file)
+        matrices.append(matrix)
+
     project = classes.Project(
         meta=project_meta,
         datasets=[dataset],
         files=files,
         tables=[table],
-        trees=trees
+        trees=trees,
+        matrices=matrices
     )
 
     return project.to_dict()
@@ -131,13 +139,14 @@ def new_project(
     metadata_values: list,
     mr_access_token: str,
     mr_base_url: str,
-    distances: Optional[str] = None,
+    raw_matrices: list[str] = list(),
     public: bool=False,
     hidden:list = list(),
     verify: bool=True
 ):
     project_dict = build_basic_project_dict(project_name, metadata_keys, metadata_values, tree_calcs,
-                                            distances=distances)
+                                            raw_matrices=raw_matrices)
+    print(project_dict)
     json_data = dumps(project_dict)
     url = mr_base_url + '/api/projects/create/'
     if not public:

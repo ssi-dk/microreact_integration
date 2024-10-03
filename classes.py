@@ -196,6 +196,7 @@ class Project:
     files: list
     tables: list
     trees: list
+    matrices: list = field(default_factory=list)
 
     """These element types are not necessary for a basic project;
     however, empty lists must be present for the schema to validate."""
@@ -230,7 +231,8 @@ class Project:
             'slicers',
             'styles',
             'timelines',
-            'views'
+            'views',
+            'matrices'
         ]
 
     def dictify_section(self, section_name: str):
