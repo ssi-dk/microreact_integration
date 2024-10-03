@@ -61,8 +61,8 @@ def build_basic_project_dict(
         matrix_idx += 1
         matrix_file = classes.File(type='data', body=raw_matrix, name="matrix_" + str(matrix_idx))
         files.append(matrix_file)
-        matrix=classes.Matrix(file=matrix_file, title="Matrix " + str(matrix_idx))
-        #matrices.append(matrix)
+        matrix=classes.Matrix(file=matrix_file.id, title="Matrix " + str(matrix_idx))
+        matrices.append(matrix)
 
     project = classes.Project(
         meta=project_meta,
