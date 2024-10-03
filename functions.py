@@ -154,7 +154,6 @@ def new_project(
         hidden=hidden,
         raw_matrices=raw_matrices
     )
-    print(project_dict)
     json_data = dumps(project_dict)
     url = mr_base_url + '/api/projects/create/'
     if not public:
