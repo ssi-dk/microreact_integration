@@ -80,7 +80,7 @@ def build_basic_project_dict_2(
         metadata_url: str,
         columns: list,
         tree_calcs: list,
-        raw_matrix: str=None,
+        raw_matrices: list=list(),
         hidden: list=list()
         ):
     """
@@ -123,6 +123,15 @@ def build_basic_project_dict_2(
                           dataset=dataset.id,
                           hidden=hidden
                           )
+
+    matrices = list()
+    matrix_idx = 0
+    for raw_matrix in raw_matrices:
+        matrix_idx += 1
+        matrix_file = classes.File(type='data', body=raw_matrix, name="matrix_" + str(matrix_idx))
+        files.append(matrix_file)
+        matrix=classes.Matrix(file=matrix_file.id, title="Matrix " + str(matrix_idx))
+        matrices.append(matrix)
 
     project = classes.Project(
         meta=project_meta,
@@ -177,6 +186,7 @@ def new_project_2(
     mr_base_url: str,
     tree_calcs: list = list(),
     hidden:list = list(),
+    raw_matrices: list[str] = list(),
     public: bool=False,
     verify: bool=True
 ):
@@ -186,7 +196,8 @@ def new_project_2(
         metadata_url,
         columns,
         tree_calcs,
-        hidden
+        hidden,
+        raw_matrices
     )
     json_data = dumps(project_dict, indent=4)
     url = mr_base_url + '/api/projects/create/'
