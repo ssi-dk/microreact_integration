@@ -140,7 +140,7 @@ def new_project(
     metadata_values: list,
     mr_access_token: str,
     mr_base_url: str,
-    tree_calcs: list,
+    tree_calcs: list = list(),
     hidden:list = list(),
     raw_matrices: list[str] = list(),
     public: bool=False,
