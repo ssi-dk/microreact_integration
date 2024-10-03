@@ -130,6 +130,7 @@ def new_project(
     metadata_values: list,
     mr_access_token: str,
     mr_base_url: str,
+    matrix: str=False,
     public: bool=False,
     hidden:list = list(),
     verify: bool=True
