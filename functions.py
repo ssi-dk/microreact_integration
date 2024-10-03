@@ -146,13 +146,14 @@ def new_project(
     public: bool=False,
     verify: bool=True
 ):
-    project_dict = build_basic_project_dict(project_name,
-                                            metadata_keys,
-                                            metadata_values,
-                                            tree_calcs,
-                                            hidden=hidden,
-                                            raw_matrices=raw_matrices
-                                            )
+    project_dict = build_basic_project_dict(
+        project_name,
+        metadata_keys,
+        metadata_values,
+        tree_calcs,
+        hidden=hidden,
+        raw_matrices=raw_matrices
+    )
     print(project_dict)
     json_data = dumps(project_dict)
     url = mr_base_url + '/api/projects/create/'
