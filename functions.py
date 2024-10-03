@@ -62,7 +62,7 @@ def build_basic_project_dict(
         matrix_file = classes.File(type='data', body=raw_matrix, name="matrix_" + str(matrix_idx))
         files.append(matrix_file)
         matrix=classes.Matrix(file=matrix_file, title="Matrix " + str(matrix_idx))
-        matrices.append(matrix)
+        #matrices.append(matrix)
 
     project = classes.Project(
         meta=project_meta,
@@ -146,8 +146,8 @@ def new_project(
     hidden:list = list(),
     verify: bool=True
 ):
-    project_dict = build_basic_project_dict(project_name, metadata_keys, metadata_values, tree_calcs)  #,
-    #                                            raw_matrices=raw_matrices)
+    project_dict = build_basic_project_dict(project_name, metadata_keys, metadata_values, tree_calcs,
+                                                raw_matrices=raw_matrices)
     print(project_dict)
     json_data = dumps(project_dict)
     url = mr_base_url + '/api/projects/create/'
