@@ -10,10 +10,7 @@ def stringify(value_list):
 
 def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_values: list, tree_calcs: list, hidden: list=list()):
     """
-    Create a data structure that defines a Microreact project and which can easily be used with the
-    Microreact projects/create API endpoint to create an actual project.
-
-    The project will contain one or more trees and a data table, and will have no other elements.
+    Create a Microreact project where the metadata table is constructed from lists of keys and values.
 
     project_name: the name that will be shown for the project
     metadata_keys: keys of the metadata fields as a list. The first one will become the id field
@@ -69,11 +66,8 @@ def build_basic_project_dict_2(
         hidden: list=list()
         ):
     """
-    Create a data structure that defines a Microreact project and which can easily be used with the
-    Microreact projects/create API endpoint to create an actual project.
-
-    The project will contain zero or more trees and a data table, and will have no other elements.
-
+    Create a Microreact project where the metadata table is defined using an external URL.
+    
     project_name: the name that will be shown for the project
     metadata_url: url containing af metadatalist. The first column will become the id field
     columns: list of columns to read from metadata_url. Only these column will exist in the Microreact project,
