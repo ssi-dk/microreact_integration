@@ -136,14 +136,14 @@ def build_basic_project_dict_2(
 
 def new_project(
     project_name: str,
-    tree_calcs: list,
     metadata_keys: list,
     metadata_values: list,
     mr_access_token: str,
     mr_base_url: str,
+    tree_calcs: list,
+    hidden:list = list(),
     raw_matrices: list[str] = list(),
     public: bool=False,
-    hidden:list = list(),
     verify: bool=True
 ):
     project_dict = build_basic_project_dict(project_name,
