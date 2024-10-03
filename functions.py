@@ -181,7 +181,13 @@ def new_project_2(
     verify: bool=True
 ):
     print(f"Metadata URL: {metadata_url}")
-    project_dict = build_basic_project_dict_2(project_name, metadata_url, columns, tree_calcs, hidden)
+    project_dict = build_basic_project_dict_2(
+        project_name,
+        metadata_url,
+        columns,
+        tree_calcs,
+        hidden
+    )
     json_data = dumps(project_dict, indent=4)
     url = mr_base_url + '/api/projects/create/'
     if not public:
