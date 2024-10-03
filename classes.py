@@ -26,7 +26,7 @@ class Meta:
 class Element(ABC):
     """
     Subclasses of this class are only used for creating NEW elements (not yet in Microreact).
-    Remember to run set_id() after object initialization.
+    __post_init__ in all subclasses must call super().set_id().
     """
     id: str=''
 
@@ -129,6 +129,21 @@ class Table(Element):
             'title': self.title,
             'id': self.id,
             'columns': self.get_col_list(),
+            'file': self.file
+        }
+
+@dataclass
+class Matrix(Element):
+    title: str = "Matrix"
+    file: str
+
+    def __post_init__(self):
+        super().set_id()
+    
+    def to_dict(self):
+        return {
+            'title': self.title,
+            'id': self.id,
             'file': self.file
         }
 
