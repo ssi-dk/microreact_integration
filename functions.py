@@ -1,5 +1,6 @@
 from json import dumps, dump, load
 import requests
+from typing import Optional
 
 from . import classes
 
@@ -13,7 +14,7 @@ def build_basic_project_dict(
         metadata_keys: list,
         metadata_values: list,
         tree_calcs: list,
-        matrix: classes.Matrix=None,
+        distances: Optional[str]=None,
         hidden: list=list()):
     """
     Create a Microreact project where the metadata table is constructed from lists of keys and values.
@@ -69,7 +70,7 @@ def build_basic_project_dict_2(
         metadata_url: str,
         columns: list,
         tree_calcs: list,
-        matrix: classes.Matrix=None,
+        raw_matrix: str=None,
         hidden: list=list()
         ):
     """
@@ -130,12 +131,13 @@ def new_project(
     metadata_values: list,
     mr_access_token: str,
     mr_base_url: str,
-    matrix: str=False,
+    distances: Optional[str] = None,
     public: bool=False,
     hidden:list = list(),
     verify: bool=True
 ):
-    project_dict = build_basic_project_dict(project_name, metadata_keys, metadata_values, tree_calcs)
+    project_dict = build_basic_project_dict(project_name, metadata_keys, metadata_values, tree_calcs,
+                                            distances=distances)
     json_data = dumps(project_dict)
     url = mr_base_url + '/api/projects/create/'
     if not public:
