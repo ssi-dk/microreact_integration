@@ -134,17 +134,17 @@ class Table(Element):
 
 @dataclass
 class Matrix(Element):
-    title: str = "Matrix"
     file: str
+    title: str = "Matrix"
 
     def __post_init__(self):
         super().set_id()
     
     def to_dict(self):
         return {
+            'file': self.file,
             'title': self.title,
-            'id': self.id,
-            'file': self.file
+            'id': self.id
         }
 
 @dataclass

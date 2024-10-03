@@ -8,7 +8,13 @@ def stringify(value_list):
     return line + "\n"
 
 
-def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_values: list, tree_calcs: list, hidden: list=list()):
+def build_basic_project_dict(
+        project_name: str,
+        metadata_keys: list,
+        metadata_values: list,
+        tree_calcs: list,
+        matrix: classes.Matrix=None,
+        hidden: list=list()):
     """
     Create a Microreact project where the metadata table is constructed from lists of keys and values.
 
@@ -63,6 +69,7 @@ def build_basic_project_dict_2(
         metadata_url: str,
         columns: list,
         tree_calcs: list,
+        matrix: classes.Matrix=None,
         hidden: list=list()
         ):
     """
