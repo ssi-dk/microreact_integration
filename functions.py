@@ -138,7 +138,8 @@ def build_basic_project_dict_2(
         datasets=[dataset],
         files=files,
         tables=[table],
-        trees=trees
+        trees=trees,
+        matrices=matrices
     )
 
     return project.to_dict()
