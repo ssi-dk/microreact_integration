@@ -112,6 +112,8 @@ class Table(Element):
     hidden: list
 
     def __post_init__(self):
+        if self.hidden is None:
+            self.hidden = list()
         super().set_id()
 
     def get_col_list(self):
