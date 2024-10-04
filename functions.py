@@ -79,7 +79,7 @@ def build_basic_project_dict_2(
         project_name: str,
         metadata_url: str,
         columns: list,
-        tree_calcs: list,
+        tree_calcs: list=list(),
         raw_matrices: list=list(),
         hidden: list=list()
         ):
@@ -195,9 +195,9 @@ def new_project_2(
         project_name,
         metadata_url,
         columns,
-        tree_calcs,
-        hidden,
-        raw_matrices
+        tree_calcs=tree_calcs,
+        hidden=hidden,
+        raw_matrices=raw_matrices
     )
     json_data = dumps(project_dict, indent=4)
     url = mr_base_url + '/api/projects/create/'
