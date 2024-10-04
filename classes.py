@@ -117,7 +117,7 @@ class Table(Element):
     def get_col_list(self):
         col_list = list()
         for column in self.columns:
-            col_list.append(					{
+            col_list.append({
 						"field": column,
 						"fixed": False,
                         "hidden": True if column in self.hidden else False
