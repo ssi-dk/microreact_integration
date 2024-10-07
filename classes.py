@@ -191,40 +191,8 @@ class Tree(Element):
             "showLeafLabels": True,
             "labelField": "id",
 
-            "alignLabels": True,
-            "blockHeaderFontSize": 13,
-            "blockPadding": 0,
-            "blocks": [],
-            "blockSize": 14,
-            "controls": False,
-            "fontSize": 16,
-            "hideOrphanDataRows": False,
-            "ids": None,
-            "internalLabelsFilterRange": [
-                0,
-                100
-            ],
-            "internalLabelsFontSize": 13,
-            "lasso": False,
-            "nodeSize": 14,
-            "path": None,
-            "roundBranchLengths": True,
-            "scaleLineAlpha": True,
-            "showBlockHeaders": True,
-            "showBlockLabels": False,
-            "showEdges": True,
-            "showInternalLabels": False,
-            "showLabels": True,
-            "showPiecharts": True,
-            "showShapeBorders": True,
-            "showShapes": True,
-            "styleLeafLabels": False,
-            "styleNodeEdges": False,
-            "subtreeIds": None,
-            "type": "rc",
-            "title": "single",
             "labelField": "seq_id",
-            "highligthedId": None,
+
 
         }
 
