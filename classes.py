@@ -185,7 +185,11 @@ class Tree(Element):
             "type": self.type,
             "title": self.title,
             "labelField": self.labelField,
-            "highligthedId": self.highlightedId
+            "highligthedId": self.highlightedId,
+            "showBranchLengths": True,
+            "branchLengthsDigits": 0,
+            "showLeafLabels": True,
+            "labelField": "id",
         }
 
 @dataclass
