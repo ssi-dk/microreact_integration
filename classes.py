@@ -189,11 +189,7 @@ class Tree(Element):
             "showBranchLengths": True,
             "branchLengthsDigits": 0,
             "showLeafLabels": True,
-            "labelField": "id",
-
-            "labelField": "seq_id",
-
-
+            "labelField": self.labelField,
         }
 
 @dataclass
