@@ -26,7 +26,7 @@ class Meta:
 class Element(ABC):
     """
     Subclasses of this class are only used for creating NEW elements (not yet in Microreact).
-    Remember to run set_id() after object initialization.
+    __post_init__ in all subclasses must call super().set_id().
     """
     id: str=''
 
@@ -112,12 +112,14 @@ class Table(Element):
     hidden: list
 
     def __post_init__(self):
+        if self.hidden is None:
+            self.hidden = list()
         super().set_id()
 
     def get_col_list(self):
         col_list = list()
         for column in self.columns:
-            col_list.append(					{
+            col_list.append({
 						"field": column,
 						"fixed": False,
                         "hidden": True if column in self.hidden else False
@@ -130,6 +132,21 @@ class Table(Element):
             'id': self.id,
             'columns': self.get_col_list(),
             'file': self.file
+        }
+
+@dataclass
+class Matrix(Element):
+    file: str
+    title: str = "Matrix"
+
+    def __post_init__(self):
+        super().set_id()
+    
+    def to_dict(self):
+        return {
+            'file': self.file,
+            'title': self.title,
+            'id': self.id
         }
 
 @dataclass
@@ -181,6 +198,7 @@ class Project:
     files: list
     tables: list
     trees: list
+    matrices: list = field(default_factory=list)
 
     """These element types are not necessary for a basic project;
     however, empty lists must be present for the schema to validate."""
@@ -196,7 +214,8 @@ class Project:
     timelines: list = field(default_factory=list)
     views: list = field(default_factory=list)
 
-    schema: str="https://microreact.org/schema/v1.json"
+    # schema_url is not actively used for anything; it is just a reference.
+    schema_url: str="https://microreact.org/schema/v1.json"
 
     def get_sections(self):
         return [
@@ -214,7 +233,8 @@ class Project:
             'slicers',
             'styles',
             'timelines',
-            'views'
+            'views',
+            'matrices'
         ]
 
     def dictify_section(self, section_name: str):
@@ -226,7 +246,7 @@ class Project:
     
     def to_dict(self):
         output_dict = {
-            'schema': self.schema,
+            'schema': self.schema_url,
             'meta': self.meta.to_dict()
         }
         for section in self.get_sections():

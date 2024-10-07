@@ -1,5 +1,6 @@
 from json import dumps, dump, load
 import requests
+from typing import Optional
 
 from . import classes
 
@@ -8,12 +9,15 @@ def stringify(value_list):
     return line + "\n"
 
 
-def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_values: list, tree_calcs: list):
+def build_basic_project_dict(
+        project_name: str,
+        metadata_keys: list,
+        metadata_values: list,
+        tree_calcs: list,
+        raw_matrices: list=list(),
+        hidden: list=list()):
     """
-    Create a data structure that defines a Microreact project and which can easily be used with the
-    Microreact projects/create API endpoint to create an actual project.
-
-    The project will contain one or more trees and a data table, and will have no other elements.
+    Create a Microreact project where the metadata table is constructed from lists of keys and values.
 
     project_name: the name that will be shown for the project
     metadata_keys: keys of the metadata fields as a list. The first one will become the id field
@@ -49,14 +53,24 @@ def build_basic_project_dict(project_name: str, metadata_keys: list, metadata_va
         trees.append(tree)
         tree_number += 1
 
-    table = classes.Table(title='Metadata', columns=metadata_keys, file=metadata_file.id)
+    table = classes.Table(title='Metadata', columns=metadata_keys, file=metadata_file.id, hidden=hidden, dataset=dataset)
+
+    matrices = list()
+    matrix_idx = 0
+    for raw_matrix in raw_matrices:
+        matrix_idx += 1
+        matrix_file = classes.File(type='data', body=raw_matrix, name="matrix_" + str(matrix_idx))
+        files.append(matrix_file)
+        matrix=classes.Matrix(file=matrix_file.id, title="Matrix " + str(matrix_idx))
+        matrices.append(matrix)
 
     project = classes.Project(
         meta=project_meta,
         datasets=[dataset],
         files=files,
         tables=[table],
-        trees=trees
+        trees=trees,
+        matrices=matrices
     )
 
     return project.to_dict()
@@ -65,15 +79,13 @@ def build_basic_project_dict_2(
         project_name: str,
         metadata_url: str,
         columns: list,
-        tree_calcs: list,
+        tree_calcs: list=list(),
+        raw_matrices: list=list(),
         hidden: list=list()
         ):
     """
-    Create a data structure that defines a Microreact project and which can easily be used with the
-    Microreact projects/create API endpoint to create an actual project.
-
-    The project will contain zero or more trees and a data table, and will have no other elements.
-
+    Create a Microreact project where the metadata table is defined using an external URL.
+    
     project_name: the name that will be shown for the project
     metadata_url: url containing af metadatalist. The first column will become the id field
     columns: list of columns to read from metadata_url. Only these column will exist in the Microreact project,
@@ -112,27 +124,46 @@ def build_basic_project_dict_2(
                           hidden=hidden
                           )
 
+    matrices = list()
+    matrix_idx = 0
+    for raw_matrix in raw_matrices:
+        matrix_idx += 1
+        matrix_file = classes.File(type='data', body=raw_matrix, name="matrix_" + str(matrix_idx))
+        files.append(matrix_file)
+        matrix=classes.Matrix(file=matrix_file.id, title="Matrix " + str(matrix_idx))
+        matrices.append(matrix)
+
     project = classes.Project(
         meta=project_meta,
         datasets=[dataset],
         files=files,
         tables=[table],
-        trees=trees
+        trees=trees,
+        matrices=matrices
     )
 
     return project.to_dict()
 
 def new_project(
     project_name: str,
-    tree_calcs: list,
     metadata_keys: list,
     metadata_values: list,
     mr_access_token: str,
     mr_base_url: str,
+    tree_calcs: list = list(),
+    hidden:list = list(),
+    raw_matrices: list[str] = list(),
     public: bool=False,
     verify: bool=True
 ):
-    project_dict = build_basic_project_dict(project_name, metadata_keys, metadata_values, tree_calcs)
+    project_dict = build_basic_project_dict(
+        project_name,
+        metadata_keys,
+        metadata_values,
+        tree_calcs,
+        hidden=hidden,
+        raw_matrices=raw_matrices
+    )
     json_data = dumps(project_dict)
     url = mr_base_url + '/api/projects/create/'
     if not public:
@@ -156,11 +187,19 @@ def new_project_2(
     mr_base_url: str,
     tree_calcs: list = list(),
     hidden:list = list(),
+    raw_matrices: list[str] = list(),
     public: bool=False,
     verify: bool=True
 ):
     print(f"Metadata URL: {metadata_url}")
-    project_dict = build_basic_project_dict_2(project_name, metadata_url, columns, tree_calcs, hidden)
+    project_dict = build_basic_project_dict_2(
+        project_name,
+        metadata_url,
+        columns,
+        tree_calcs=tree_calcs,
+        hidden=hidden,
+        raw_matrices=raw_matrices
+    )
     json_data = dumps(project_dict, indent=4)
     url = mr_base_url + '/api/projects/create/'
     if not public:
