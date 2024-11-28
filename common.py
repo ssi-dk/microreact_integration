@@ -1,5 +1,5 @@
 import os
 
-MICROREACT_BASE_URL = os.environ["MICROREACT_BASE_URL"]
+MICROREACT_BASE_URL = os.getenv("MICROREACT_BASE_URL", "https://microreact.ugerm.dksund.dk/")
 MICROREACT_ACCESS_TOKEN = os.environ["MICROREACT_ACCESS_TOKEN"]
-USERNAME =  os.environ["USER"]
+USERNAME =  os.getenv("USER", "None")
