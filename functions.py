@@ -189,7 +189,8 @@ def new_project_2(
     hidden:list = list(),
     raw_matrices: list[str] = list(),
     public: bool=False,
-    verify: bool=True
+    verify: bool=True,
+    file_name: str|None = None
 ):
     print(f"Metadata URL: {metadata_url}")
     project_dict = build_basic_project_dict_2(
@@ -204,16 +205,25 @@ def new_project_2(
     url = mr_base_url + '/api/projects/create/'
     if not public:
         url = url + '?access=private'
-    rest_response = requests.post(
-        url,
-        headers= {
-            'Content-Type': 'application/json; charset=utf-8',
-            'Access-Token': mr_access_token
-            },
-        data=json_data,
-        verify=verify
-    )
-    return rest_response
+    
+    if file_name:
+        with open(file_name , "w") as f:
+            dump(project_dict, f)
+        print(f"Saved {file_name}")
+    
+    else:
+        rest_response = requests.post(
+            url,
+            headers= {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Access-Token': mr_access_token
+                },
+            data=json_data,
+            verify=verify
+        )
+        print(f"HTTP response code: {str(rest_response)}")
+        print("Response as actual JSON:")
+        print(dumps(rest_response.json()))
 
 def new_project_file(
     project_name: str,
