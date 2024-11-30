@@ -172,7 +172,7 @@ def new_project(
     
     if file_name:
         with open(file_name , "w") as f:
-            dump(project_dict, f)
+            dump(project_dict, f, indent=4)
         print(f"Saved {file_name}")
     else: 
         rest_response = requests.post(
@@ -217,7 +217,7 @@ def new_project_2(
     
     if file_name:
         with open(file_name , "w") as f:
-            dump(project_dict, f)
+            dump(project_dict, f, indent=4)
         print(f"Saved {file_name}")
     
     else:
