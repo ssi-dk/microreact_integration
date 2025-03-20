@@ -152,7 +152,7 @@ def new_project(
     mr_base_url: str,
     tree_calcs: list = list(),
     hidden:list = list(),
-    raw_matrices: list[str] = list(),
+    raw_matrices: list = list(),
     public: bool=False,
     verify: bool=True
 ):
@@ -187,7 +187,7 @@ def new_project_2(
     mr_base_url: str,
     tree_calcs: list = list(),
     hidden:list = list(),
-    raw_matrices: list[str] = list(),
+    raw_matrices: list = list(),
     public: bool=False,
     verify: bool=True
 ):
